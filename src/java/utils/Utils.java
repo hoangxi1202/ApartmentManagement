@@ -21,5 +21,6 @@ public class Utils {
         String url = "jdbc:sqlserver://localhost:1433;databaseName=ShopHoaQua";
         conn = DriverManager.getConnection(url, "sa", "hoanganasd123");
         return conn;
+        //Code cua t
     }
 }
