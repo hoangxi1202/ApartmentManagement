@@ -19,7 +19,7 @@ public class Utils {
         Connection conn = null;
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String url = "jdbc:sqlserver://localhost:1433;databaseName=BFApartment";
-        conn = DriverManager.getConnection(url, "sa", "hoanganasd123");
+        conn = DriverManager.getConnection(url, "sa", "12345678");
         return conn;
         //Code cua t
     }
