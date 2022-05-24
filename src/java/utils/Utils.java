@@ -21,6 +21,5 @@ public class Utils {
         String url = "jdbc:sqlserver://localhost:1433;databaseName=BFApartment";
         conn = DriverManager.getConnection(url, "sa", "12345678");
         return conn;
-        //Code cua t
     }
 }
