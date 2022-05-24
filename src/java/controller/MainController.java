@@ -22,7 +22,7 @@ public class MainController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
     private static final String LOGIN_ACTION = "Login";
-    private static final String LOGIN = "LoginConTroller";
+    private static final String LOGIN = "LoginController";
     
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

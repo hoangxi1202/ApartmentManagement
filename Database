@@ -1,0 +1,179 @@
+USE [master]
+go
+CREATE DATABASE BFApartment
+go
+USE BFApartment
+go
+CREATE TABLE Roles
+(
+	roleId varchar(20) primary key,
+	roleName varchar(20) not null,
+	[status] bit
+)
+go
+CREATE TABLE Accounts
+(
+	userId varchar(20) primary key,
+	fullName nvarchar(50) not null,
+	roleId varchar(20) foreign key references Roles(roleId),
+	[password] varchar(20) not null,
+	[status] bit	
+)
+go
+CREATE TABLE Owners
+(
+	ownerId varchar(20) primary key,
+	[name] nvarchar(255) not null,
+	dob date not null,
+	gender varchar(10) not null,
+	job nvarchar(255),
+	phone varchar(15) not null,
+	email varchar(40) not null,
+	[status] bit
+)
+go
+CREATE TABLE Residents
+(
+	residentId varchar(20) primary key,
+	requestId varchar(20) foreign key references Requests(requestId),
+	ownerId varchar(20) foreign key references Owners(ownerId),
+	[name] nvarchar(255) not null,
+	dob date not null,
+	gender varchar(10) not null,
+	job nvarchar(255),
+	phone varchar(15) not null,
+	[status] bit
+)
+go
+CREATE TABLE Requests
+(
+	requestId varchar(20) primary key,
+	ownerId varchar(20) foreign key references Owners(ownerId),
+	[action] nvarchar(255) not null,
+	[status] bit
+)
+go
+CREATE TABLE TroubleType
+(
+	typeId varchar(20) primary key,
+	typeName nvarchar(50) not null,
+)
+go
+CREATE TABLE Trouble
+(
+	troubleId varchar(20) primary key,
+	ownerId varchar(20) foreign key references Owners(ownerId),
+	typeId varchar(20) foreign key references TroubleType(typeId),
+	troubleName nvarchar(50) not null,
+	[date] date not null,
+	detail nvarchar(1000),
+	[status] bit
+)
+go
+CREATE TABLE ApartmentTypes
+(
+	apartmentTypeId varchar(20) primary key,
+	typeName nvarchar(255),
+	rentPrice float not null,
+	salePrice float not null,
+)
+go
+CREATE TABLE Buildings
+(
+	buildingId varchar(20) primary key,
+	buildingName nvarchar(30) not null,
+	numberOfApartment int
+)
+go
+CREATE TABLE Apartments
+(
+	apartmentId varchar(20) primary key,
+	apartmentTypeId varchar(20) foreign key references ApartmentTypes(apartmentTypeId),
+	buildingId varchar(20) foreign key references Buildings(buildingId),
+	size varchar(20) not null, --dien tich m2
+	details nvarchar(1000) not null,
+	[status] bit not null
+)
+go
+CREATE TABLE Contracts -- chua chay
+(
+	contractId varchar(20) primary key,
+	ownerId varchar(20) foreign key references Owners(ownerId),
+	apartmentId varchar(20) foreign key references Apartments(apartmentId),
+	startDate date,
+	endDate date,
+	[status] varchar(50) not null
+)
+go
+CREATE TABLE [Services]
+(
+	serviceId varchar(20) primary key,
+	serviceName nvarchar(255) not null,
+	createdDate date,
+	TypeId varchar(20) foreign key references ServicesType(TypeId),
+	[status] bit
+)
+go
+go
+CREATE TABLE [ServicesType]
+(
+	TypeId varchar(20) primary key,
+	detailId varchar(20) foreign key references ServicesDetail(detailId),
+	serviceTypeName nvarchar(255) not null,
+	servicePrice float not null,
+	[status] bit
+)
+ALTER TABLE [ServicesType]
+ADD UNIQUE (detailId);
+GO
+ALTER TABLE [ServicesType] WITH CHECK ADD  CONSTRAINT [fk01_ServicesType] FOREIGN KEY(detailId)
+REFERENCES [ServicesDetail] (detailId)
+GO
+go
+go
+CREATE TABLE [ServicesDetail]
+(
+	detailId varchar(20) primary key,
+	detailName nvarchar(255) not null,
+	newIndex int,
+	oldIndex int,
+	totalUsage int,
+	price float not null,
+	total float,
+	[status] bit
+)
+go
+CREATE TABLE Invoices
+(
+	invoicesId varchar(20) primary key,
+	apartmentId varchar(20) foreign key references Apartments(apartmentId),
+	createdDate date,	
+	total float,
+	status bit
+)
+go
+CREATE TABLE InvoicesDetail
+(
+	invoicesId varchar(20) foreign key references Invoices(invoicesId),
+	serviceId varchar(20) foreign key references Services(serviceId),
+	price float
+)
+go
+------------------------------------------------------------
+INSERT INTO Roles VALUES ('US', 'User', '1')
+INSERT INTO Roles VALUES ('AD', 'Admin', '1')
+INSERT INTO Roles VALUES ('EM', 'Employee', '1')
+delete from Roles where roleId = 'GU'
+select * from Roles
+INSERT INTO Accounts VALUES ('admin','Toi la Admin', 'AD', '123', '1')
+INSERT INTO Accounts VALUES ('user','Toi la User', 'US', '123', '1')
+INSERT INTO Accounts VALUES ('employee','Toi la Employee', 'EM', '123', '1')
+---------------------------------------------------------
+INSERT INTO Owners VALUES ('on1','Do Hai Trieu','12-13-2000','male','student','01234567','trieudh@gmail.com','1')
+INSERT INTO Owners VALUES ('on2','Dang Nguyen Phu Thinh','01-03-2001','male','student','01234567','thinhdnp@gmail.com','1')
+INSERT INTO Owners VALUES ('on3','Nguyen Phuong Nhat Linh','01-07-2001','male','student','01234567','linhnpn@gmail.com','1')
+INSERT INTO Owners VALUES ('on4','Huynh Do Minh Hoang','01-02-2001','male','student','01234567','hoanghdm@gmail.com','1')
+INSERT INTO Owners VALUES ('on5','Dang Dang Khoa','01-05-2001','female','student','01234567','khoand@gmail.com','0')
+INSERT INTO Owners VALUES ('on6','Do Minh Quan','01-06-2001','female','student','01234567','quandm@gmail.com','0')
+---------------------------------------------------------
+
