@@ -3,18 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import dao.UserDAO;
 import dto.UserDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.Utils;
 
 /**
  *
@@ -33,9 +32,10 @@ public class LoginController extends HttpServlet {
         String url = ERROR;
         try {
             HttpSession session = request.getSession();
-            
+
             String userID = request.getParameter("userName");
-            String password = request.getParameter("password");
+            String password1 = request.getParameter("password");
+            String password = Utils.getMd5(password1);
             UserDAO dao = new UserDAO();
             UserDTO user = dao.checkLogin(userID, password);
             if (user != null) {
@@ -43,11 +43,11 @@ public class LoginController extends HttpServlet {
                 String roleID = user.getRoleID();
                 if ("AD".equals(roleID)) {
                     url = ADMIN_PAGE;
-                }else if ("US".equals(roleID)) {
+                } else if ("US".equals(roleID)) {
                     url = USER_PAGE;
-                }else if ("EM".equals(roleID)) {
+                } else if ("EM".equals(roleID)) {
                     url = EMPLOYEE_PAGE;
-                }else {
+                } else {
                     session.setAttribute("ERROR_MESSAGE", "Your role is not support");
                 }
             } else {
