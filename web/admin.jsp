@@ -21,6 +21,7 @@
                 return;
             }
         %>
+        <a href="managerAccount.jsp">Manager Account</a>
         <h1>Hello Admin: <%= loginUser.getFullName()%></h1>
     </body>
 </html>

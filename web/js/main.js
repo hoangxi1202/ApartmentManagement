@@ -1,4 +1,3 @@
-
 (function ($) {
     "use strict";
 
@@ -68,6 +67,19 @@
     
     /*==================================================================
     [ Show pass ]*/
+    
+    var iconClose = document.querySelector('.wrap-input100 i')
+    var x = true;
+    iconClose.addEventListener('click',function(e){
+        if (x){
+            document.getElementById('pass').type = "text";
+            x = false;
+        }else{
+            document.getElementById('pass').type = "password";
+            x = true;
+        }
+    
+    })
     var showPass = 0;
     $('.btn-show-pass').on('click', function(){
         if(showPass == 0) {
@@ -81,7 +93,7 @@
             showPass = 0;
         }
         
-    });
-
+    });    
+    
 
 })(jQuery);

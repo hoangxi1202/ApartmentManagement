@@ -22,6 +22,8 @@ public class MainController extends HttpServlet {
     private static final String ERROR = "error.jsp";
     private static final String LOGIN_ACTION = "Login";
     private static final String LOGIN = "LoginController";
+    private static final String CREATE_ACCOUNT_ACTION = "createAccount";
+    private static final String CREATEACCOUNT = "CreateAccountController";
     
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -32,6 +34,8 @@ public class MainController extends HttpServlet {
             String action = request.getParameter("action");
             if (LOGIN_ACTION.equals(action)){
                 url = LOGIN;
+            }else if(CREATE_ACCOUNT_ACTION.equals(action)){
+                url = CREATEACCOUNT;   
             }else{
                 HttpSession session = request.getSession();
                 session.setAttribute("ERROR_MESSAGE", "Function is not avaible!");
