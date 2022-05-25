@@ -53,4 +53,32 @@ public class UserDAO {
         }
         return user;
     }
+    public boolean insertUser(UserDTO user) throws SQLException {
+        boolean check = false;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        try {
+            conn = Utils.getConnection();
+            if (conn != null) {
+                String sql = "INSERT INTO Accounts(userID, fullName, roleID, password) "
+                        + " VALUES(?,?,?,?)";
+                stm = conn.prepareStatement(sql);
+                stm.setString(1, user.getUserID());
+                stm.setString(2, user.getFullName());
+                stm.setString(3, user.getRoleID());
+                stm.setString(4, user.getPassword());
+                check = stm.executeUpdate() > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+        }
+        return check;
+    }
 }
