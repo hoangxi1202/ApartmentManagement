@@ -18,6 +18,7 @@ import java.sql.SQLException;
  * @author Minh Hoàng
  */
 public class UserDAO {
+    //private static final String GET_OWNER = "Select ownerId, fullName from ";
     public UserDTO checkLogin(String userID, String password) throws SQLException, ClassNotFoundException {
         UserDTO user = null;
         Connection conn = null;

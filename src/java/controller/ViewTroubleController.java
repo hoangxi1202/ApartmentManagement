@@ -4,8 +4,14 @@
  * and open the template in the editor.
  */
 package controller;
+
+import dao.TroubleDAO;
+import dto.TroubleDTO;
+import dto.UserDTO;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,27 +19,46 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "ViewTroubleController", urlPatterns = {"/ViewTroubleController"})
+public class ViewTroubleController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String SUCCESS = "login.jsp";
-    
+    private static final String ERROR_AD = "admin.jsp";
+    private static final String ERROR_EM = "employee.jsp";
+    private static final String SUCCESS_AD = "viewTroubleAdmin.jsp";
+    private static final String SUCCESS_EM = "viewTroubleEmployee.jsp";
+    private static final String AD = "AD";
+    private static final String EM = "EM";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        try{
-            HttpSession session = request.getSession();
-            if(session!=null){
-                session.invalidate();
-                url = SUCCESS;
+        HttpSession session = request.getSession();
+        UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
+        String curUser = loginUser.getRoleID();
+        String url = "";
+        List<TroubleDTO> listTrouble = null;
+        TroubleDAO dao = new TroubleDAO();
+        if (AD.equals(curUser)) {
+            url = ERROR_AD;
+        } else if (EM.equals(curUser)) {
+            url = ERROR_EM;
+        }
+        try {
+            listTrouble = dao.getListTrouble();
+            if (listTrouble.size() > 0) {
+                request.setAttribute("LIST_TROUBLE", listTrouble);
+                if (AD.equals(curUser)) {
+                    url = SUCCESS_AD;
+                } else if (EM.equals(curUser)) {
+                    url = SUCCESS_EM;
+                }
             }
-        }catch(Exception e){
-            log("Error at LogoutController"+ e.toString());
-        }finally{
-            response.sendRedirect(url);
+        } catch (Exception e) {
+            log("Error at ViewTroubleController: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

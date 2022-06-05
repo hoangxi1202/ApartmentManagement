@@ -22,5 +22,8 @@
             }
         %>
         <h1>Hello Employee: <%= loginUser.getFullName()%></h1>
+        <form action="MainController">
+            <input type="submit" name="action" value="ViewTrouble"/>
+        </form>
     </body>
 </html>
