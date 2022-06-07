@@ -363,7 +363,7 @@ ADD CONSTRAINT fk_ten2
   FOREIGN KEY (serviceId)
   REFERENCES Services(serviceId);
   go
-
+//Account password: 123
 INSERT [dbo].[Accounts] ([userId], [password], [status], [roleId]) VALUES (N'admin', N'202cb962ac59075b964b07152d234b70', 1, N'AD')
 INSERT [dbo].[Accounts] ([userId], [password], [status], [roleId]) VALUES (N'employee', N'202cb962ac59075b964b07152d234b70', 1, N'EM')
 INSERT [dbo].[Accounts] ([userId], [password], [status], [roleId]) VALUES (N'employee_2', N'202cb962ac59075b964b07152d234b70', 1, N'EM')
