@@ -33,6 +33,8 @@ public class MainController extends HttpServlet {
     private static final String CREATE_TROUBLE_CONTROLLER = "CreateTroubleController";
     private static final String VIEW_RESIDENT = "ViewResident";
     private static final String VIEW_RESIDENT_CONTROLLER = "ViewResidentController";
+    private static final String ADD_RESIDENT = "AddResident";
+    private static final String ADD_RESIDENT_CONTROLLER = "AddResidentController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,6 +56,8 @@ public class MainController extends HttpServlet {
                 url = SEND_TROUBLE_CONTROLLER;
             } else if (VIEW_RESIDENT.equals(action)) {
                 url = VIEW_RESIDENT_CONTROLLER;
+            } else if (ADD_RESIDENT.equals(action)) {
+                url = ADD_RESIDENT_CONTROLLER;
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("ERROR_MESSAGE", "Function is not avaible!");
