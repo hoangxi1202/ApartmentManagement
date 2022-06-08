@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import java.io.IOException;
@@ -24,25 +23,48 @@ public class MainController extends HttpServlet {
     private static final String LOGIN = "LoginController";
     private static final String CREATE_ACCOUNT_ACTION = "createAccount";
     private static final String CREATEACCOUNT = "CreateAccountController";
-    
-    
+    private static final String VIEW_TROUBLE = "ViewTrouble";
+    private static final String VIEW_TROUBLE_CONTROLLER = "ViewTroubleController";
+    private static final String UPDATE_TROUBLE = "UpdateTrouble";
+    private static final String UPDATE_TROUBLE_CONTROLLER = "UpdateTroubleController";
+    private static final String SEND_TROUBLE = "SendTrouble";
+    private static final String SEND_TROUBLE_CONTROLLER = "SendTroubleController";
+    private static final String CREATE_TROUBLE = "CreateTrouble";
+    private static final String CREATE_TROUBLE_CONTROLLER = "CreateTroubleController";
+    private static final String VIEW_RESIDENT = "ViewResident";
+    private static final String VIEW_RESIDENT_CONTROLLER = "ViewResidentController";
+    private static final String ADD_RESIDENT = "AddResident";
+    private static final String ADD_RESIDENT_CONTROLLER = "AddResidentController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
             String action = request.getParameter("action");
-            if (LOGIN_ACTION.equals(action)){
+            if (LOGIN_ACTION.equals(action)) {
                 url = LOGIN;
-            }else if(CREATE_ACCOUNT_ACTION.equals(action)){
-                url = CREATEACCOUNT;   
-            }else{
+            } else if (CREATE_ACCOUNT_ACTION.equals(action)) {
+                url = CREATEACCOUNT;
+            } else if (VIEW_TROUBLE.equals(action)) {
+                url = VIEW_TROUBLE_CONTROLLER;
+            } else if (UPDATE_TROUBLE.equals(action)) {
+                url = UPDATE_TROUBLE_CONTROLLER;
+            } else if (CREATE_TROUBLE.equals(action)) {
+                url = CREATE_TROUBLE_CONTROLLER;
+            } else if (SEND_TROUBLE.equals(action)) {
+                url = SEND_TROUBLE_CONTROLLER;
+            } else if (VIEW_RESIDENT.equals(action)) {
+                url = VIEW_RESIDENT_CONTROLLER;
+            } else if (ADD_RESIDENT.equals(action)) {
+                url = ADD_RESIDENT_CONTROLLER;
+            } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("ERROR_MESSAGE", "Function is not avaible!");
             }
         } catch (Exception e) {
-            log("Error at MainController:" +e.toString());
-        }finally{
+            log("Error at MainController:" + e.toString());
+        } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

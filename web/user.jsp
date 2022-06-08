@@ -22,5 +22,8 @@
             }
         %>
         <h1>Hello User: <%= loginUser.getFullName()%></h1>
+        <form action="MainController">
+            <input type="submit" name ="action" value="CreateTrouble"/>
+        </form>
     </body>
 </html>

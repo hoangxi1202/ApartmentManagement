@@ -4,36 +4,40 @@
  * and open the template in the editor.
  */
 package controller;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "AddResidentController", urlPatterns = {"/AddResidentController"})
+public class AddResidentController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String SUCCESS = "login.jsp";
-    
+    private static final String SUCCESS = "employee.jsp";
+    private static final String ERROR = "addResident.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        try{
-            HttpSession session = request.getSession();
-            if(session!=null){
-                session.invalidate();
-                url = SUCCESS;
+        try {
+            String[] name = request.getParameterValues("name");
+            String[] dob = request.getParameterValues("dob");
+            String[] gender = request.getParameterValues("gender");
+            String[] job = request.getParameterValues("job");
+            String[] phone = request.getParameterValues("phone");
+            ArrayList list = new ArrayList();
+            for (int i = 0; i<name.length; i++) {
+                
             }
-        }catch(Exception e){
-            log("Error at LogoutController"+ e.toString());
-        }finally{
-            response.sendRedirect(url);
+            
+        } catch (Exception e) {
         }
     }
 
