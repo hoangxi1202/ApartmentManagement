@@ -4,8 +4,14 @@
  * and open the template in the editor.
  */
 package controller;
+
+import dao.ResidentDAO;
+import dao.UserDAO;
+import dto.ResidentDTO;
+import dto.UserDTO;
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,27 +19,41 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "AddResidentController", urlPatterns = {"/AddResidentController"})
+public class AddResidentController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String SUCCESS = "login.jsp";
-    
+    private static final String SUCCESS = "user.jsp";
+    private static final String ERROR = "addResident.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        try{
+        try {
+            String[] name = request.getParameterValues("name");
+            String[] dob = request.getParameterValues("dob");
+            String[] gender = request.getParameterValues("gender");
+            String[] job = request.getParameterValues("job");
+            String[] phone = request.getParameterValues("phone");
             HttpSession session = request.getSession();
-            if(session!=null){
-                session.invalidate();
-                url = SUCCESS;
+            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
+            UserDAO dao = new UserDAO();
+            String ownerId = dao.getOwnerId(loginUser.getUserID());
+            ResidentDAO daoRes = new ResidentDAO();
+            String residentId = ownerId + String.valueOf(daoRes.getIndexResident(ownerId));
+            String requestId = String.valueOf(daoRes.getIndexRequest() + 1);
+            daoRes.insertRequest(requestId, ownerId);
+            for (int i = 0; i < name.length; i++) {
+                daoRes.addResident(new ResidentDTO(residentId, ownerId, name[i], dob[i], (gender[i].equals("1")), job[i], phone[i], false, requestId));
             }
-        }catch(Exception e){
-            log("Error at LogoutController"+ e.toString());
-        }finally{
-            response.sendRedirect(url);
+            url = SUCCESS;
+
+        } catch (Exception e) {
+            log("Error at AddResidentCOntroller: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

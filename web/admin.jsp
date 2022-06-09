@@ -22,6 +22,7 @@
             }
         %>
         <a href="managerAccount.jsp">Manager Account</a>
+
         <form action="MainController">
             <input type="submit" name="action" value="Logout"/>
         </form>
@@ -97,4 +98,15 @@
         }
     %>
 </body>
+
+        <h1>Hello Admin: <%= loginUser.getFullName()%></h1>
+        <form action="MainController">
+            <input type="submit" name="action" value="ViewTrouble"/>
+        </form>
+        <form action="MainController">
+            <input type="submit" name="action" value="ViewResident"/>
+        </form>
+        
+    </body>
+
 </html>

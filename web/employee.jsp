@@ -28,6 +28,7 @@
             }
         %>
 
+
         <a href="managerService.jsp">Quan Ly Dich vu</a>
         <form action="MainController">
             <input type="submit" name="action" value="Logout"/>
@@ -128,4 +129,12 @@
 
     %> 
 </body>
+
+        <h1>Hello Employee: <%= loginUser.getFullName()%></h1>
+        <form action="MainController">
+            <input type="submit" name="action" value="ViewTrouble"/>
+        </form>
+        <a href="MainController?action=befResidentRequest" >Resident Request</a>
+    </body>
+
 </html>

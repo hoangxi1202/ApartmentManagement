@@ -4,36 +4,44 @@
  * and open the template in the editor.
  */
 package controller;
+
+import dao.TroubleDAO;
+import dto.TroubleTypeDTO;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "BeforeCreateTroubleController", urlPatterns = {"/BeforeCreateTroubleController"})
+public class BeforeCreateTroubleController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String SUCCESS = "login.jsp";
-    
+    private static final String SUCCESS = "createTrouble.jsp";
+    private static final String ERROR = "user.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        try{
-            HttpSession session = request.getSession();
-            if(session!=null){
-                session.invalidate();
+        List<TroubleTypeDTO> listType = null;
+        TroubleDAO dao = new TroubleDAO();
+        try {
+            listType = dao.getListTypeTrouble();
+            if (listType.size() > 0) {
+                request.setAttribute("LIST_TYPE_TROUBLE", listType);
                 url = SUCCESS;
             }
-        }catch(Exception e){
-            log("Error at LogoutController"+ e.toString());
-        }finally{
-            response.sendRedirect(url);
+        } catch (Exception e) {
+            log("Error at BeforeCreateTroubleController: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

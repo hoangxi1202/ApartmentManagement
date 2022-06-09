@@ -4,8 +4,14 @@
  * and open the template in the editor.
  */
 package controller;
+
+import dao.ResidentDAO;
+import dao.UserDAO;
+import dto.UserDTO;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,27 +19,36 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "DeleteResidentController", urlPatterns = {"/DeleteResidentController"})
+public class DeleteResidentController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String SUCCESS = "login.jsp";
-    
+    private static final String SUCCESS = "user.jsp";
+    private static final String ERROR = "deleteResident.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        try{
+        try {
+            String[] residentId = request.getParameterValues("delete");
+            ResidentDAO daoRes = new ResidentDAO();
             HttpSession session = request.getSession();
-            if(session!=null){
-                session.invalidate();
-                url = SUCCESS;
+            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
+            UserDAO dao = new UserDAO();
+            String ownerId = dao.getOwnerId(loginUser.getUserID());
+            String requestId = String.valueOf(daoRes.getIndexRequest() + 1);
+            daoRes.insertRequestV2(requestId, ownerId);
+            for (int i = 0; i < residentId.length; i++) {
+                daoRes.updateResident(requestId, residentId[i]);
             }
-        }catch(Exception e){
-            log("Error at LogoutController"+ e.toString());
-        }finally{
-            response.sendRedirect(url);
+            url = SUCCESS;
+
+        } catch (ClassNotFoundException | SQLException e) {
+            log("Error at DeleteResidentController: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

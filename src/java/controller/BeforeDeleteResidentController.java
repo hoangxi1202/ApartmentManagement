@@ -4,8 +4,15 @@
  * and open the template in the editor.
  */
 package controller;
+
+import dao.ResidentDAO;
+import dto.ResidentDTO;
+import dto.UserDTO;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,27 +20,32 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "BeforeDeleteResidentController", urlPatterns = {"/BeforeDeleteResidentController"})
+public class BeforeDeleteResidentController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String SUCCESS = "login.jsp";
-    
+    private static final String SUCCESS = "deleteResident.jsp";
+    private static final String ERROR = "user.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        try{
+        List<ResidentDTO> listRes = null;
+        try {
             HttpSession session = request.getSession();
-            if(session!=null){
-                session.invalidate();
+            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
+            ResidentDAO dao = new ResidentDAO();
+            listRes = dao.getListResidentV2(loginUser.getUserID());
+            if (listRes.size() > 0) {
+                request.setAttribute("LIST_RESIDENT", listRes);
                 url = SUCCESS;
             }
-        }catch(Exception e){
-            log("Error at LogoutController"+ e.toString());
-        }finally{
-            response.sendRedirect(url);
+        } catch (SQLException e) {
+            log("Error at BeforeDeleteResidentController: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

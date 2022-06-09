@@ -11,6 +11,9 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -40,5 +43,32 @@ public class Utils {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Date getDate(String msg) {
+        boolean check = true;
+        Date date = null;
+        do {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setLenient(false);
+            try {
+                date = sdf.parse(msg);
+                check = false;
+            } catch (ParseException ex) {
+            }
+        } while (check);
+        return date;
+
+    }
+
+    public static boolean getBoolean(String input) {
+        boolean check = false;
+        try {
+            if ("male".equals(input)) {
+                check = true;
+            }
+        } catch (Exception e) {
+        }
+        return check;
     }
 }
