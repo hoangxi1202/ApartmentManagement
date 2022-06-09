@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import entity.UserError;
 
 /**
  *
@@ -20,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CreateAccountController extends HttpServlet {
 
-    private static final String ERROR = "createUser.jsp";
-    private static final String SUCCESS = "login.jsp";
+    private static final String ERROR = "managerAccount.jsp";
+    private static final String SUCCESS = "managerAccount.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -29,48 +30,50 @@ public class CreateAccountController extends HttpServlet {
         String url = ERROR;
         try {
             String userID = request.getParameter("userName");
-            String fullName = request.getParameter("email");
+            String fullName = request.getParameter("fullName");
 //            String roleID = request.getParameter("roleID");
             String roleID = "US";
             String password = request.getParameter("password");
+            String confirm = request.getParameter("passwordConfirm");
             boolean check = true;
-//            UserError userError = new UserError();
-//            if (userID.length() > 10 || userID.length() < 5) {
-//                userError.setUserIDError("UserID length must be in [5,10]");
-//                check = false;
-//            }
-//            if (fullName.length() > 50 || fullName.length() < 5) {
-//                userError.setFullNameError("Full Name length must be in [5,50]");
-//                check = false;
-//            }
+            UserError userError = new UserError();
+            if (userID.length() > 20) {
+                userError.setUserIDError("UserID length must be less than 20!");
+                check = false;
+            }
+            if (fullName.length() > 50 ) {
+                userError.setFullNameError("Full Name length must be less than 50!");
+                check = false;
+            }
 //            if (roleID.length() > 5 || roleID.length() < 2) {
 //                userError.setRoleIDError("UserID length must be in [2,5]");
 //                check = false;
 //            }
-//            if (!password.equals(confirm)) {
-//                userError.setConfirmError("2 password ko trung");
-//                check = false;
-//            }
+            if (!password.equals(confirm)) {
+                userError.setConfirmError("confirm password wrong!");
+                check = false;
+            }
             if (check) {
                 UserDAO dao = new UserDAO();
                 UserDTO user = new UserDTO(userID, fullName, roleID, password);
-//                boolean checkDuplicate = dao.checkDuplicate(userID);
-//                if (checkDuplicate) {
-//                    userError.setUserIDError("Duplicate UserID " + userID + " !");
-//                    request.setAttribute("USER_ERROR", userError);
-//                } else {
+                boolean checkDuplicate = dao.checkDuplicate(userID);
+                if (checkDuplicate) {
+                    userError.setUserIDError("Duplicate UserID " + userID + " !");
+                    request.setAttribute("USER_ERROR", userError);
+                } else {
                     boolean checkInsert = dao.insertUser(user);
-//                    if (checkInsert) {
+                    if (checkInsert) {
                         url = SUCCESS;
-//                    } else {
-//                        userError.setMessageError("Cannot insert, unknow error!");
-//                        request.setAttribute("USER_ERROR", userError);
-//                    }
-//                }
+                        userError.setMessageError("Create new account successfully!");
+                        request.setAttribute("USER_ERROR", userError);
+                    } else {
+                        userError.setMessageError("Cannot insert, unknow error!");
+                        request.setAttribute("USER_ERROR", userError);
+                    }
+                }
+            }else {
+                request.setAttribute("USER_ERROR", userError);
             }
-//            } else {
-//                request.setAttribute("USER_ERROR", userError);
-//            }
         } catch (Exception e) {
             log("Error at createController" + e.toString());
         } finally {

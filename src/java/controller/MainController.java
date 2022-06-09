@@ -21,8 +21,30 @@ public class MainController extends HttpServlet {
     private static final String ERROR = "error.jsp";
     private static final String LOGIN_ACTION = "Login";
     private static final String LOGIN = "LoginController";
+    private static final String LOGOUT_ACTION = "Logout";
+    private static final String LOGOUT = "LogoutController";
     private static final String CREATE_ACCOUNT_ACTION = "createAccount";
     private static final String CREATEACCOUNT = "CreateAccountController";
+
+    private static final String SEARCH_ACTION = "Search";
+    private static final String SEARCH = "SearchController";
+    private static final String UPDATE_ACTION = "Update";
+    private static final String UPDATE = "UpdateController";
+    private static final String DELETE_ACTION = "Delete";
+    private static final String DELETE = "DeleteController";
+    private static final String SENDMAIL_ACTION = "SendMail";
+    private static final String SENDMAIL = "SendMailController";
+    private static final String ADD_SERVICE_ACTION = "AddService";
+    private static final String ADD_SERVICE = "AddServiceController";
+    private static final String SEARCH_SERVICE_ACTION = "SearchService";
+    private static final String SEARCH_SERVICE = "SearchServiceController";
+    private static final String UPDATE_SERVICE_ACTION = "UpdateService";
+    private static final String UPDATE_SERVICE = "UpdateServiceController";
+    private static final String REMOVE_SERVICE_ACTION = "RemoveService";
+    private static final String REMOVE_SERVICE = "RemoveServiceController";
+    private static final String ADD_DETAIL_SERVICE_ACTION = "AddDetailService";
+    private static final String ADD_DETAIL_SERVICE = "AddDetailServiceController";
+
     private static final String VIEW_TROUBLE = "ViewTrouble";
     private static final String VIEW_TROUBLE_CONTROLLER = "ViewTroubleController";
     private static final String UPDATE_TROUBLE = "UpdateTrouble";
@@ -44,6 +66,7 @@ public class MainController extends HttpServlet {
     private static final String BEFORE_RESIDENT_REQUEST = "befResidentRequest";
     private static final String BEFORE_RESIDENT_REQUEST_CONTROLLER = "befResidentRequestController";
 
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -52,6 +75,31 @@ public class MainController extends HttpServlet {
             String action = request.getParameter("action");
             if (LOGIN_ACTION.equals(action)) {
                 url = LOGIN;
+
+            } else if (LOGOUT_ACTION.equals(action)) {
+                url = LOGOUT;
+            } else if (CREATE_ACCOUNT_ACTION.equals(action)) {
+                url = CREATEACCOUNT;
+            } else if (SEARCH_ACTION.equals(action)) {
+                url = SEARCH;
+            } else if (UPDATE_ACTION.equals(action)) {
+                url = UPDATE;
+            } else if (DELETE_ACTION.equals(action)) {
+                url = DELETE;
+            } else if (SENDMAIL_ACTION.equals(action)) {
+                url = SENDMAIL;
+            }else if (ADD_SERVICE_ACTION.equals(action)) {
+                url = ADD_SERVICE;
+            }else if (SEARCH_SERVICE_ACTION.equals(action)) {
+                url = SEARCH_SERVICE;
+            }else if (UPDATE_SERVICE_ACTION.equals(action)) {
+                url = UPDATE_SERVICE;
+            }else if (REMOVE_SERVICE_ACTION.equals(action)) {
+                url = REMOVE_SERVICE;
+            }else if (ADD_DETAIL_SERVICE_ACTION.equals(action)) {
+                url = ADD_DETAIL_SERVICE;
+            }else {
+
             } else if (CREATE_ACCOUNT_ACTION.equals(action)) {
                 url = CREATEACCOUNT;
             } else if (VIEW_TROUBLE.equals(action)) {
@@ -75,6 +123,7 @@ public class MainController extends HttpServlet {
             } else if (BEFORE_RESIDENT_REQUEST.equals(action)) {
                 url = BEFORE_RESIDENT_REQUEST_CONTROLLER;
             } else {
+
                 HttpSession session = request.getSession();
                 session.setAttribute("ERROR_MESSAGE", "Function is not avaible!");
             }

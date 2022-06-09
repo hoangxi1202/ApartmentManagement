@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -55,14 +57,36 @@ public class UserDAO {
         return user;
     }
 
+    public boolean checkDuplicate(String userID) throws SQLException {
+        boolean check = false;
+
+
     public String getOwnerId(String userID) throws SQLException, ClassNotFoundException {
         String ownId = "";
+
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
             conn = Utils.getConnection();
             if (conn != null) {
+
+                String sql = "SELECT userID "
+                        + " FROM Accounts "
+                        + " WHERE userID=?";
+                stm = conn.prepareStatement(sql);
+                stm.setString(1, userID);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    check = true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.close();
+=======
                 stm = conn.prepareStatement(GET_OWNER);
                 stm.setString(1, userID);
                 rs = stm.executeQuery();
@@ -74,16 +98,25 @@ public class UserDAO {
         } finally {
             if (rs != null) {
                 rs.close();
+
             }
             if (stm != null) {
                 stm.close();
             }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return check;
+    }
+
             if (conn != null) {
                 conn.close();
             }
         }
         return ownId;
     }
+
 
     public boolean insertUser(UserDTO user) throws SQLException {
         boolean check = false;
@@ -112,5 +145,98 @@ public class UserDAO {
             }
         }
         return check;
+    }
+
+    public List<UserDTO> getListUser(String search) throws SQLException {
+        List<UserDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = Utils.getConnection();
+            if (conn != null) {
+                String sql = "SELECT userID, fullName, roleID "
+                        + " FROM Accounts "
+                        + " WHERE fullName like ?";
+                stm = conn.prepareStatement(sql);
+                stm.setString(1, "%" + search + "%");
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String userID = rs.getString("userID");
+                    String fullName = rs.getString("fullName");
+                    String roleID = rs.getString("roleID");
+                    String password = "***";
+                    list.add(new UserDTO(userID, fullName, roleID, password));
+                }
+            }
+        } catch (Exception e) {
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return list;
+    }
+
+   public boolean updateUser(UserDTO user) throws SQLException {
+        boolean check = false;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        try {
+            conn = Utils.getConnection();
+            if (conn != null) {
+                String sql = " UPDATE Accounts "
+                        + " SET fullName=?, roleID=? "
+                        + " WHERE userID=?";
+                stm = conn.prepareStatement(sql);
+                stm.setString(1, user.getFullName());
+                stm.setString(2, user.getRoleID());
+                stm.setString(3, user.getUserID());
+                check = stm.executeUpdate() > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+        }
+        return check;
+    }
+
+    public boolean deleteUser(String userID) throws SQLException {
+        boolean result = false;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        try {
+            conn = Utils.getConnection();
+            if (conn != null) {
+                String sql = " DELETE Accounts "
+                        + " WHERE userId=?";
+                stm = conn.prepareStatement(sql);
+                stm.setString(1, userID);
+                int value = stm.executeUpdate();
+                result = value > 0 ? true : false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return result;
     }
 }

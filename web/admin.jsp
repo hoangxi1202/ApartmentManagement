@@ -1,9 +1,5 @@
-<%-- 
-    Document   : admin
-    Created on : May 23, 2022, 9:32:30 PM
-    Author     : Minh Hoàng
---%>
 
+<%@page import="java.util.List"%>
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,8 +16,89 @@
                 session.setAttribute("ERROR_MESSAGE", "Please Login as admin!");
                 return;
             }
+            String search = (String) request.getParameter("search");
+            if (search == null) {
+                search ="";
+            }
         %>
         <a href="managerAccount.jsp">Manager Account</a>
+
+        <form action="MainController">
+            <input type="submit" name="action" value="Logout"/>
+        </form>
+<!--        <form action="MainController" method="POST">
+            Email<input type="email" name="email" />
+            <input type="submit" name="action" value="SendMail"/>
+        </form>-->
+        <form action="MainController">
+            Search<input type="text" name="search" value="<%=search%>"/>
+            <input type="submit" name="action" value="Search"/>
+        </form>
+        <%
+            List<UserDTO> list = (List<UserDTO>) request.getAttribute("LIST_USER");
+            if (list != null) {
+                if (!list.isEmpty()) {
+        %>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>User ID</th>
+                    <th>Full Name</th>
+                    <th>Role ID</th>
+                    <th>Password</th>
+                    <th>Delete</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    int count = 1;
+                    for (UserDTO user : list) {
+                %>
+            <form action="MainController" >
+                <tr>
+                    <td><%= count++%></td>
+                    <td><%= user.getUserID()%></td>
+                    <td>                  
+                        <input type="text" name="fullName" value="<%=user.getFullName()%>"/>
+                    </td>              
+                    <td>
+                        <input type="text" name="roleID" value="<%=user.getRoleID()%>"/>
+                    </td>
+
+                    <td><%= user.getPassword()%></td>
+                    <td>
+             <!--//            <a href="MainController?action=Delete&userID=<%=user.getUserID()%>&search=<%=search%> " >Delete</a>--> 
+                        <input type="submit" name="action" value="Delete"/>
+                        <input type="hidden" name="userID" value="<%=user.getUserID()%>"/>
+                        <input type="hidden" name="search" value="<%=search%>"/> 
+                    </td>
+                    <td>
+                        <input type="submit" name="action" value="Update"/>
+                        <input type="hidden" name="userID" value="<%=user.getUserID()%>"/>
+                        <input type="hidden" name="search" value="<%=search%>"/> 
+                    </td>
+                </tr>
+            </form>
+            <%
+                }
+            %>
+        </tbody>
+    </table>
+    <%
+        }
+        String error_message = (String) request.getAttribute("ERROR_MESSSAGE");
+        if (error_message == null) {
+            error_message = "";
+        }
+    %>
+    <h1 ><%= error_message%></h1>
+    <%
+        }
+    %>
+</body>
+
         <h1>Hello Admin: <%= loginUser.getFullName()%></h1>
         <form action="MainController">
             <input type="submit" name="action" value="ViewTrouble"/>
@@ -31,4 +108,5 @@
         </form>
         
     </body>
+
 </html>
