@@ -59,11 +59,13 @@ public class UserDAO {
 
     public boolean checkDuplicate(String userID) throws SQLException {
         boolean check = false;
+        return check;
+    }
 
 
     public String getOwnerId(String userID) throws SQLException, ClassNotFoundException {
         String ownId = "";
-
+boolean check = false;
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -86,7 +88,7 @@ public class UserDAO {
         } finally {
             if (conn != null) {
                 conn.close();
-=======
+
                 stm = conn.prepareStatement(GET_OWNER);
                 stm.setString(1, userID);
                 rs = stm.executeQuery();
@@ -94,26 +96,7 @@ public class UserDAO {
                     ownId = rs.getString("ownerId");
                 }
             }
-        } catch (SQLException e) {
-        } finally {
-            if (rs != null) {
-                rs.close();
-
-            }
-            if (stm != null) {
-                stm.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-        }
-        return check;
-    }
-
-            if (conn != null) {
-                conn.close();
-            }
-        }
+        } 
         return ownId;
     }
 

@@ -66,7 +66,6 @@ public class MainController extends HttpServlet {
     private static final String BEFORE_RESIDENT_REQUEST = "befResidentRequest";
     private static final String BEFORE_RESIDENT_REQUEST_CONTROLLER = "befResidentRequestController";
 
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -88,18 +87,16 @@ public class MainController extends HttpServlet {
                 url = DELETE;
             } else if (SENDMAIL_ACTION.equals(action)) {
                 url = SENDMAIL;
-            }else if (ADD_SERVICE_ACTION.equals(action)) {
+            } else if (ADD_SERVICE_ACTION.equals(action)) {
                 url = ADD_SERVICE;
-            }else if (SEARCH_SERVICE_ACTION.equals(action)) {
+            } else if (SEARCH_SERVICE_ACTION.equals(action)) {
                 url = SEARCH_SERVICE;
-            }else if (UPDATE_SERVICE_ACTION.equals(action)) {
+            } else if (UPDATE_SERVICE_ACTION.equals(action)) {
                 url = UPDATE_SERVICE;
-            }else if (REMOVE_SERVICE_ACTION.equals(action)) {
+            } else if (REMOVE_SERVICE_ACTION.equals(action)) {
                 url = REMOVE_SERVICE;
-            }else if (ADD_DETAIL_SERVICE_ACTION.equals(action)) {
+            } else if (ADD_DETAIL_SERVICE_ACTION.equals(action)) {
                 url = ADD_DETAIL_SERVICE;
-            }else {
-
             } else if (CREATE_ACCOUNT_ACTION.equals(action)) {
                 url = CREATEACCOUNT;
             } else if (VIEW_TROUBLE.equals(action)) {
