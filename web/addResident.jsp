@@ -15,14 +15,14 @@
         <form action="MainController" method="POST">
             <div id="nhap">
                 <div>
-                    <input type="text" name="name"  />
-                    <input type="date" name="dob"  />
-                    <select name="gender">
+                    Name<input type="text" name="name"  /></br>
+                    DoB<input type="date" name="dob"  /></br>
+                    Sex<select name="gender" type="checkbox">
                         <option value="1">Nam</option>
                         <option value="0">Nữ</option>
-                    </select>
-                    <input type="text" name="job" />
-                    <input type="tel" name="phone" />
+                    </select></br>
+                    Job<input type="text" name="job" /></br>
+                    Phone<input type="tel" name="phone" /></br>
                 </div>
             </div>
 
@@ -35,14 +35,14 @@
                 let nhap = document.getElementById("nhap");
                 let div = document.createElement("div");
                 div.innerHTML = '<div>'
-                        + '\n<input type="text" name="name"  />'
-                        + '\n<input type="date" name="dob"  />'
-                        + '\n<select name="gender">'
+                        + '\nName<input type="text" name="name"  /></br>'
+                        + '\nDoB<input type="date" name="dob"  /></br>'
+                        + '\nSex<select name="gender">'
                         + '\n    <option value="1">Nam</option>'
                         + '\n   <option value="0">Nữ</option>'
-                        + '\n </select>'
-                        + '\n<input type="text" name="job" />'
-                        + '\n<input type="tel" name="phone" />'
+                        + '\n </select></br>'
+                        + '\nJob<input type="text" name="job" /></br>'
+                        + '\nPhone<input type="tel" name="phone" /></br>'
                         + '\n</div>';
                 nhap.appendChild(div);
             }

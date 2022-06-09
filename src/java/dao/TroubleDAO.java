@@ -6,6 +6,7 @@
 package dao;
 
 import dto.TroubleDTO;
+import dto.TroubleTypeDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,15 +21,17 @@ import utils.Utils;
  */
 public class TroubleDAO {
 
-    private static final String VIEW_TROUBLE = "SELECT Apartments.apartmentId, Trouble.troubleId, Owners.name, Trouble.date, TroubleType.typeName, Trouble.detail, Trouble.solution, Trouble.status\n"
-            + "FROM Apartments, Trouble, Owners, TroubleType, Contracts\n"
-            + "WHERE Trouble.typeId = TroubleType.typeId\n"
-            + "		AND Trouble.ownerId = Owners.ownerId\n"
+    private static final String VIEW_TROUBLE = "SELECT Apartments.apartmentId, Troubles.troubleId, Owners.name, Troubles.date, TroubleTypes.detail as type, Troubles.detail, Troubles.solution, Troubles.status\n"
+            + "FROM Apartments, Troubles, Owners, TroubleTypes, Contracts\n"
+            + "WHERE Troubles.typeId = TroubleTypes.typeId\n"
+            + "		AND Troubles.ownerId = Owners.ownerId\n"
             + "		AND Owners.ownerId = Contracts.ownerId\n"
             + "		AND Contracts.apartmentId = Apartments.apartmentId";
-    private static final String UPDATE_TROUBLE = "UPDATE Trouble SET status = ? WHERE troubleId = ?";
+    private static final String UPDATE_TROUBLE = "UPDATE Troubles SET status = ? WHERE troubleId = ?";
+    private static final String VIEW_TYPE_TROUBLE = "SELECT typeId, detail FROM TroubleTypes";
 
     public List<TroubleDTO> getListTrouble() throws SQLException {
+        //not fix yet
         List<TroubleDTO> listTrouble = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ptm = null;
@@ -43,7 +46,7 @@ public class TroubleDAO {
                     String troubleId = rs.getString("troubleId");
                     String ownerName = rs.getString("name");
                     String date = rs.getString("date");
-                    String typeName = rs.getString("typeName");
+                    String typeName = rs.getString("type");
                     String detail = rs.getString("detail");
                     String solution = rs.getString("solution");
                     String check = rs.getString("status");
@@ -99,20 +102,53 @@ public class TroubleDAO {
         }
         return check;
     }
-    
+
     public boolean createTrouble(String accountId, String apartmentId, String type, String detail, String solution) {
         //not support yet
-        boolean check =false;
+        boolean check = false;
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
         try {
             conn = Utils.getConnection();
-            if (conn!=null) {
+            if (conn != null) {
                 ptm = conn.prepareStatement("");
             }
         } catch (Exception e) {
         }
         return check;
+    }
+
+    public List<TroubleTypeDTO> getListTypeTrouble() throws SQLException {
+        List<TroubleTypeDTO> listTrouble = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        ResultSet rs = null;
+        try {
+            conn = Utils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(VIEW_TYPE_TROUBLE);
+                rs = ptm.executeQuery();
+                while (rs.next()) {
+                    String typeId = rs.getString("typeId");
+                    String detail = rs.getString("detail");
+                    listTrouble.add(new TroubleTypeDTO(typeId, detail));
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return listTrouble;
     }
 }

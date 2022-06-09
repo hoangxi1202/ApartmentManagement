@@ -64,7 +64,7 @@ public class Utils {
     public static boolean getBoolean(String input) {
         boolean check = false;
         try {
-            if ("1".equals(input)) {
+            if ("male".equals(input)) {
                 check = true;
             }
         } catch (Exception e) {

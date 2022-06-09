@@ -19,8 +19,9 @@ public class ResidentDTO {
     private String job;
     private String phone;
     private boolean status;
+    public String resquestId;
 
-    public ResidentDTO(String residentId, String ownerId, String name, String dob, boolean gender, String job, String phone, boolean status) {
+    public ResidentDTO(String residentId, String ownerId, String name, String dob, boolean gender, String job, String phone, boolean status, String resquestId) {
         this.residentId = residentId;
         this.ownerId = ownerId;
         this.name = name;
@@ -29,6 +30,15 @@ public class ResidentDTO {
         this.job = job;
         this.phone = phone;
         this.status = status;
+        this.resquestId = resquestId;
+    }
+
+    public String getResquestId() {
+        return resquestId;
+    }
+
+    public void setResquestId(String resquestId) {
+        this.resquestId = resquestId;
     }
 
     public String getOwnerId() {

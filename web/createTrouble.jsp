@@ -4,6 +4,7 @@
     Author     : Nhat Linh
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,15 +13,19 @@
         <title>Báo cáo sự cố</title>
     </head>
     <body>
-        <%-- Not support yet --%>
         <form action="MainController">
-            Tòa: <input type="text" name="apartmentId" alt="" required=""/></br>
-            Hợp đồng: <input type="text" name="contractId" alt="" required=""/></br>
-            <select>
-                !-- not now
+            Căn hộ số: <input type="text" name="apartmentId" alt="" required=""/></br>
+            <select name="typeId">
+                <c:if test="${requestScope.LIST_TYPE_TROUBLE !=null}">
+                    <c:if test="${not empty requestScope.LIST_TYPE_TROUBLE}">
+                        <c:forEach var="typeTrouble" items="${requestScope.LIST_TYPE_TROUBLE}" varStatus="counter">
+                            <option value="${typeTrouble.typeId}">${typeTrouble.detail}</option>
+                        </c:forEach>
+                    </c:if>
+                </c:if>
             </select>
-            Nội dung: <input type="text" name="detail" required="" alt="Nội dung chi tiết" />
-            Giải pháp: <input type="text" name="solution" alt="Giải pháp mong muốn"/>
+            Nội dung: <input type="text" name="detail" required="" placeholder="Nội dung chi tiết" />
+            Giải pháp: <input type="text" name="solution" placeholder="Giải pháp mong muốn"/>
             <input type="submit" name="action" value="SendTrouble"/>
 
         </form>

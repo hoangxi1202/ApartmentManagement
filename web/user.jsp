@@ -22,8 +22,9 @@
             }
         %>
         <h1>Hello User: <%= loginUser.getFullName()%></h1>
-        <form action="MainController">
-            <input type="submit" name ="action" value="CreateTrouble"/>
-        </form>
+        <a href="createTrouble.jsp">Trouble</a></br>
+        <a href="addResident.jsp">Add Resident</a>
+        <a href="MainController?action=BeforeCreateTrouble">Create Trouble</a>
+        <a href="MainController?action=BeforeDeleteResident">Delete Resident</a>
     </body>
 </html>

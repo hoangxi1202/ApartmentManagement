@@ -35,6 +35,14 @@ public class MainController extends HttpServlet {
     private static final String VIEW_RESIDENT_CONTROLLER = "ViewResidentController";
     private static final String ADD_RESIDENT = "AddResident";
     private static final String ADD_RESIDENT_CONTROLLER = "AddResidentController";
+    private static final String BEFORE_CREATE_TROUBLE = "BeforeCreateTrouble";
+    private static final String BEFORE_CREATE_TROUBLE_CONTROLLER = "BeforeCreateTroubleController";
+    private static final String BEFORE_DELETE_RESIDENT = "BeforeDeleteResident";
+    private static final String BEFORE_DELETE_RESIDENT_CONTROLLER = "BeforeDeleteResidentController";
+    private static final String DELETE_RESIDENT = "DeleteResident";
+    private static final String DELETE_RESIDENT_CONTROLLER = "DeleteResidentController";
+    private static final String BEFORE_RESIDENT_REQUEST = "befResidentRequest";
+    private static final String BEFORE_RESIDENT_REQUEST_CONTROLLER = "befResidentRequestController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -58,6 +66,14 @@ public class MainController extends HttpServlet {
                 url = VIEW_RESIDENT_CONTROLLER;
             } else if (ADD_RESIDENT.equals(action)) {
                 url = ADD_RESIDENT_CONTROLLER;
+            } else if (BEFORE_CREATE_TROUBLE.equals(action)) {
+                url = BEFORE_CREATE_TROUBLE_CONTROLLER;
+            } else if (BEFORE_DELETE_RESIDENT.equals(action)) {
+                url = BEFORE_DELETE_RESIDENT_CONTROLLER;
+            } else if (DELETE_RESIDENT.equals(action)) {
+                url = DELETE_RESIDENT_CONTROLLER;
+            } else if (BEFORE_RESIDENT_REQUEST.equals(action)) {
+                url = BEFORE_RESIDENT_REQUEST_CONTROLLER;
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("ERROR_MESSAGE", "Function is not avaible!");
