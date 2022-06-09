@@ -5,53 +5,41 @@
  */
 package controller;
 
-import dao.ResidentDAO;
-import dao.UserDAO;
-import dto.ResidentDTO;
-import dto.UserDTO;
+import dao.TroubleDAO;
+import dto.TroubleTypeDTO;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Nhat Linh
  */
-@WebServlet(name = "AddResidentController", urlPatterns = {"/AddResidentController"})
-public class AddResidentController extends HttpServlet {
+@WebServlet(name = "BeforeCreateTroubleController", urlPatterns = {"/BeforeCreateTroubleController"})
+public class BeforeCreateTroubleController extends HttpServlet {
 
-    private static final String SUCCESS = "user.jsp";
-    private static final String ERROR = "addResident.jsp";
+    private static final String SUCCESS = "createTrouble.jsp";
+    private static final String ERROR = "user.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        List<TroubleTypeDTO> listType = null;
+        TroubleDAO dao = new TroubleDAO();
         try {
-            String[] name = request.getParameterValues("name");
-            String[] dob = request.getParameterValues("dob");
-            String[] gender = request.getParameterValues("gender");
-            String[] job = request.getParameterValues("job");
-            String[] phone = request.getParameterValues("phone");
-            HttpSession session = request.getSession();
-            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
-            UserDAO dao = new UserDAO();
-            String ownerId = dao.getOwnerId(loginUser.getUserID());
-            ResidentDAO daoRes = new ResidentDAO();
-            String residentId = ownerId + String.valueOf(daoRes.getIndexResident(ownerId));
-            String requestId = String.valueOf(daoRes.getIndexRequest() + 1);
-            daoRes.insertRequest(requestId, ownerId);
-            for (int i = 0; i < name.length; i++) {
-                daoRes.addResident(new ResidentDTO(residentId, ownerId, name[i], dob[i], (gender[i].equals("1")), job[i], phone[i], false, requestId));
+            listType = dao.getListTypeTrouble();
+            if (listType.size() > 0) {
+                request.setAttribute("LIST_TYPE_TROUBLE", listType);
+                url = SUCCESS;
             }
-            url = SUCCESS;
-
         } catch (Exception e) {
-            log("Error at AddResidentCOntroller: " + e.toString());
+            log("Error at BeforeCreateTroubleController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

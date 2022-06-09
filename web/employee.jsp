@@ -25,5 +25,6 @@
         <form action="MainController">
             <input type="submit" name="action" value="ViewTrouble"/>
         </form>
+        <a href="MainController?action=befResidentRequest" >Resident Request</a>
     </body>
 </html>

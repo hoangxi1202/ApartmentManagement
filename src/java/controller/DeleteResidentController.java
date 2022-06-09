@@ -7,9 +7,9 @@ package controller;
 
 import dao.ResidentDAO;
 import dao.UserDAO;
-import dto.ResidentDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,37 +21,32 @@ import javax.servlet.http.HttpSession;
  *
  * @author Nhat Linh
  */
-@WebServlet(name = "AddResidentController", urlPatterns = {"/AddResidentController"})
-public class AddResidentController extends HttpServlet {
+@WebServlet(name = "DeleteResidentController", urlPatterns = {"/DeleteResidentController"})
+public class DeleteResidentController extends HttpServlet {
 
     private static final String SUCCESS = "user.jsp";
-    private static final String ERROR = "addResident.jsp";
+    private static final String ERROR = "deleteResident.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String[] name = request.getParameterValues("name");
-            String[] dob = request.getParameterValues("dob");
-            String[] gender = request.getParameterValues("gender");
-            String[] job = request.getParameterValues("job");
-            String[] phone = request.getParameterValues("phone");
+            String[] residentId = request.getParameterValues("delete");
+            ResidentDAO daoRes = new ResidentDAO();
             HttpSession session = request.getSession();
             UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
             UserDAO dao = new UserDAO();
             String ownerId = dao.getOwnerId(loginUser.getUserID());
-            ResidentDAO daoRes = new ResidentDAO();
-            String residentId = ownerId + String.valueOf(daoRes.getIndexResident(ownerId));
             String requestId = String.valueOf(daoRes.getIndexRequest() + 1);
-            daoRes.insertRequest(requestId, ownerId);
-            for (int i = 0; i < name.length; i++) {
-                daoRes.addResident(new ResidentDTO(residentId, ownerId, name[i], dob[i], (gender[i].equals("1")), job[i], phone[i], false, requestId));
+            daoRes.insertRequestV2(requestId, ownerId);
+            for (int i = 0; i < residentId.length; i++) {
+                daoRes.updateResident(requestId, residentId[i]);
             }
             url = SUCCESS;
 
-        } catch (Exception e) {
-            log("Error at AddResidentCOntroller: " + e.toString());
+        } catch (ClassNotFoundException | SQLException e) {
+            log("Error at DeleteResidentController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

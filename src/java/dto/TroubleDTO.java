@@ -34,7 +34,9 @@ public class TroubleDTO {
         this.detail = detail;
         this.solution = solution;
         this.status = status;
+
     }
+
 
     public String getTroubleId() {
         return troubleId;
@@ -99,7 +101,5 @@ public class TroubleDTO {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
-    
 
 }
