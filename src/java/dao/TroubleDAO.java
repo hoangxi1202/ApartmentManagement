@@ -21,14 +21,15 @@ import utils.Utils;
  */
 public class TroubleDAO {
 
-    private static final String VIEW_TROUBLE = "SELECT Apartments.apartmentId, Troubles.troubleId, Owners.name, Troubles.date, TroubleTypes.detail as type, Troubles.detail, Troubles.solution, Troubles.status\n"
-            + "FROM Apartments, Troubles, Owners, TroubleTypes, Contracts\n"
-            + "WHERE Troubles.typeId = TroubleTypes.typeId\n"
-            + "		AND Troubles.ownerId = Owners.ownerId\n"
-            + "		AND Owners.ownerId = Contracts.ownerId\n"
-            + "		AND Contracts.apartmentId = Apartments.apartmentId";
-    private static final String UPDATE_TROUBLE = "UPDATE Troubles SET status = ? WHERE troubleId = ?";
-    private static final String VIEW_TYPE_TROUBLE = "SELECT typeId, detail FROM TroubleTypes";
+    private static final String VIEW_TROUBLE = "SELECT Apartments.apartmentId, Apart_Troubles.tranId, Owners.fullName, Apart_Troubles.date, Troubles.troubleName as type, \n"
+            + "            Apart_Troubles.detail, Apart_Troubles.status \n"
+            + "            FROM Apartments, Troubles, Owners, Apart_Troubles, Contracts \n"
+            + "            WHERE Troubles.troubleId = Apart_Troubles.troubleId \n"
+            + "			AND Owners.ownerId = Contracts.ownerId \n"
+            + "			AND Apartments.apartmentId = Apart_Troubles.apartmentId \n"
+            + "			AND Contracts.apartmentId = Apartments.apartmentId";
+    private static final String UPDATE_TROUBLE = "UPDATE Apart_Troubles SET status = ? WHERE tranId = ?";
+    private static final String VIEW_TYPE_TROUBLE = "SELECT troubleId, troubleName FROM Troubles";
 
     public List<TroubleDTO> getListTrouble() throws SQLException {
         //not fix yet
@@ -43,18 +44,17 @@ public class TroubleDAO {
                 rs = ptm.executeQuery();
                 while (rs.next()) {
                     String apartment = rs.getString("apartmentId");
-                    String troubleId = rs.getString("troubleId");
-                    String ownerName = rs.getString("name");
+                    String troubleId = rs.getString("tranId");
+                    String ownerName = rs.getString("fullName");
                     String date = rs.getString("date");
                     String typeName = rs.getString("type");
                     String detail = rs.getString("detail");
-                    String solution = rs.getString("solution");
                     String check = rs.getString("status");
                     boolean status = false;
                     if (check.equals("1")) {
                         status = true;
                     }
-                    listTrouble.add(new TroubleDTO(troubleId, apartment, ownerName, date, typeName, detail, solution, status));
+                    listTrouble.add(new TroubleDTO(troubleId, apartment, ownerName, date, typeName, detail, "", status));
 
                 }
             }
