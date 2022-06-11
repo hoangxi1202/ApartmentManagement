@@ -105,11 +105,10 @@ public class ServiceDAO {
                 while (rs.next()) {
                     String serviceId = rs.getString("serviceId");
                     String serviceName = rs.getString("serviceName");
-                    Date createdDate = rs.getDate("createdDate");
+//                    Date createdDate = rs.getDate("createdDate");
                     int status = rs.getInt("status");
-                    float price = rs.getFloat("price");
-                    String detailId = rs.getString("detailId");
-                    list.add(new Service(serviceId, serviceName, createdDate, status, detailId, price));
+                    float price = rs.getFloat("servicePrice");
+                    list.add(new Service(serviceId, serviceName, status, price));
                 }
             }
         } catch (Exception e) {
@@ -127,44 +126,44 @@ public class ServiceDAO {
         return list;
     }
 
-    public Service getService(String id) throws SQLException {
-        Service s = new Service();
-        Connection conn = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        try {
-            conn = Utils.getConnection();
-            if (conn != null) {
-                String sql = "SELECT * "
-                        + " FROM Services "
-                        + " WHERE serviceId = ?";
-                stm = conn.prepareStatement(sql);
-                stm.setString(1, id);
-                rs = stm.executeQuery();
-                while (rs.next()) {
-                    String serviceId = rs.getString("serviceId");
-                    String serviceName = rs.getString("serviceName");
-                    Date createdDate = rs.getDate("createdDate");
-                    int status = rs.getInt("status");
-                    float price = rs.getFloat("price");
-                    String detailId = rs.getString("detailId");
-                    s = new Service(serviceId, serviceName, createdDate, status, detailId, price);
-                }
-            }
-        } catch (Exception e) {
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stm != null) {
-                stm.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        }
-        return s;
-    }
+//    public Service getService(String id) throws SQLException {
+//        Service s = new Service();
+//        Connection conn = null;
+//        PreparedStatement stm = null;
+//        ResultSet rs = null;
+//        try {
+//            conn = Utils.getConnection();
+//            if (conn != null) {
+//                String sql = "SELECT * "
+//                        + " FROM Services "
+//                        + " WHERE serviceId = ?";
+//                stm = conn.prepareStatement(sql);
+//                stm.setString(1, id);
+//                rs = stm.executeQuery();
+//                while (rs.next()) {
+//                    String serviceId = rs.getString("serviceId");
+//                    String serviceName = rs.getString("serviceName");
+//                    Date createdDate = rs.getDate("createdDate");
+//                    int status = rs.getInt("status");
+//                    float price = rs.getFloat("price");
+//                    String detailId = rs.getString("detailId");
+//                    s = new Service(serviceId, serviceName, createdDate, status, detailId, price);
+//                }
+//            }
+//        } catch (Exception e) {
+//        } finally {
+//            if (rs != null) {
+//                rs.close();
+//            }
+//            if (stm != null) {
+//                stm.close();
+//            }
+//            if (conn != null) {
+//                conn.close();
+//            }
+//        }
+//        return s;
+//    }
 
     public boolean updateService(Service s) throws SQLException {
         boolean check = false;

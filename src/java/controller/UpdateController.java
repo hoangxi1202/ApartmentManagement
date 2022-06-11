@@ -31,12 +31,11 @@ public class UpdateController extends HttpServlet {
         String url = ERROR;
         try {
             String userID = request.getParameter("userID");
-            String fullName = request.getParameter("fullName");
             String roleID = request.getParameter("roleID");
             HttpSession session = request.getSession();
             UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
             UserDAO dao = new UserDAO();
-            UserDTO user = new UserDTO(userID, fullName, roleID, "");
+            UserDTO user = new UserDTO(userID, "", roleID);
             boolean check = dao.updateUser(user);
             if (check) {
                 if (userID.equals(loginUser.getUserID())) {
