@@ -9,6 +9,7 @@ import dao.ServiceDAO;
 import entity.Service;
 import entity.ServiceDetail;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,11 +32,12 @@ public class AddDetailServiceController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            ServiceDAO dao = new ServiceDAO();
             String detailID = request.getParameter("detailID");
-            if (detailID == null) {
+            if (dao.checkDuplicateServiceDetail(detailID)) {
+                request.setAttribute("MESSAGE", "Duplicate ID: " + detailID);
             } else {
                 String serID = request.getParameter("serID");
-                String detailName = request.getParameter("detailName");
                 //
                 int nIndex = Integer.parseInt(request.getParameter("nIndex"));
                 int oIndex = Integer.parseInt(request.getParameter("oIndex"));
@@ -45,16 +47,13 @@ public class AddDetailServiceController extends HttpServlet {
                 if (nIndex < oIndex) {
                     request.setAttribute("MESSAGE", "New index must be greater than old index!");
                 } else {
-                    ServiceDetail sd = new ServiceDetail(detailID, detailName, nIndex, oIndex, price, 1);
-                    ServiceDAO dao = new ServiceDAO();
+                    Date date = dao.getService(serID).getCreatedDate();
+                    ServiceDetail sd = new ServiceDetail(detailID, nIndex, oIndex, price, date, serID);
                     if (dao.addSerDetail(sd)) {
-                        if (dao.addDetailID(serID, detailID)) {
                             url = SUCCESS;
                             request.setAttribute("MESSAGE", "successfully!");
-                        } else {
-                            request.setAttribute("MESSAGE", "Add deatil in service fail");
-                        }
-                    } else {
+                    }
+                    else {
                         request.setAttribute("MESSAGE", "add fail!");
                     }
                 }

@@ -39,7 +39,9 @@ public class AddServiceController extends HttpServlet {
             java.sql.Date sqlDate = new Date(date.getTime());
             //
             float serPrice = Float.parseFloat(request.getParameter("serPrice"));
-            Service s = new Service(serID, serName, sqlDate, 1, serPrice);
+            //
+            String type = request.getParameter("type");
+            Service s = new Service(serID, serName, sqlDate, 1, type, serPrice);
             ServiceDAO SerDAO = new ServiceDAO();
             String mess;
             boolean checkDuplicate = SerDAO.checkDuplicate(serID);

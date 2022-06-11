@@ -21,11 +21,10 @@
         %>
         <form action="MainController" method="POST">
             Detail ID<input type="text" name="detailID" required=""><br>
-            Detail Name<input type="text" name="detailName" required=""><br>
             New Index<input type="number" name="nIndex" required=""><br>
             Old Index<input type="number" name="oIndex" required=""><br>
             Price<input type="text" name="price" required=""><br>
-            <input type="hidden" name="serID">
+            <input type="hidden" name="serID" value="<%=serID%>">
             <input type="submit" name="action" value="AddDetailService"><br>
         </form>      
         <h1><%=mess%></h1>
