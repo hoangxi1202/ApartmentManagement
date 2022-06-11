@@ -1,4 +1,5 @@
 ﻿CREATE DATABASE BFApartment
+use master 
 USE BFApartment
 CREATE TABLE Banks (
 	bankId varchar(50) PRIMARY KEY,
@@ -111,12 +112,13 @@ CREATE TABLE ServiceDetails(
 	serviceDetailId varchar(25),
 	oldIndex int,
 	newIndex int,
-	usagaIndex int,
-	[date] date,	
-	serviceId varchar(25) FOREIGN KEY REFERENCES Services(serviceId)
+	usagaIndex int,	
 	[date] date,
 	serviceId varchar(25) UNIQUE FOREIGN KEY REFERENCES Services(serviceId)
 	)
+
+ALTER TABLE ServiceDetails
+ADD price float
 
 ALTER TABLE Services
 ADD typeId varchar(20) FOREIGN KEY REFERENCES ServiceTypes(typeId)
@@ -408,9 +410,13 @@ INSERT INTO Services VALUES('E01', 'Tiền Điện', 2500, 1, '01-01-2022', 'SV0
 INSERT INTO Services VALUES('W01', 'Tiền Nước', 12000, 1, '01-01-2022', 'SV02')
 INSERT INTO Services VALUES('S01', 'Tiền Wifi', 300000, 1, '01-01-2022', 'SV03')
 INSERT INTO Services VALUES('S02', 'Tiền Gym', 220000, 1, '01-01-2022', 'SV04')
+select * from Services
+select * from ServiceDetails
+INSERT INTO ServiceDetails VALUES('SD1', 400, 300, 100, '01-01-2022', 'E01',1500)
+INSERT INTO ServiceDetails VALUES('SD2', 400, 300, 100, '01-01-2022', 'W01',1500)
 
-INSERT INTO ServiceDetails VALUES('SD1', 400, 300, 100, '01-01-2022', 'E01')
-INSERT INTO ServiceDetails VALUES('SD2', 400, 300, 100, '01-01-2022', 'W01')
+SELECT serviceId  FROM ServiceDetails WHERE serviceId = 'E01'
+
 
 INSERT INTO BillDetails VALUES('0101221', 'E01', 100000)
 INSERT INTO BillDetails VALUES('0101221', 'W01', 100000)

@@ -6,49 +6,44 @@
 
 package entity;
 
+import java.sql.Date;
+
 /**
  *
  * @author Minh Hoàng
  */
 public class ServiceDetail {  							
-    public String detailId;
-    public String detailName;
+    public String serviceDetailId;
     public int newIndex;
     public int oldIndex;
-    public int totalUsage;
+    public int usagaIndex;
     public float price;
     public float total;
-    public int status;
+    public Date date;
+    public String serviceId;
 
     public ServiceDetail() {
     }
 
-    public ServiceDetail(String detailId, String detailName, int newIndex, int oldIndex, float price, int status) {
-        this.detailId = detailId;
-        this.detailName = detailName;
+    public ServiceDetail(String serviceDetailId, int newIndex, int oldIndex, float price, Date date,String serviceId) {
+        this.serviceDetailId = serviceDetailId;
         this.newIndex = newIndex;
         this.oldIndex = oldIndex;
-        this.totalUsage = newIndex - oldIndex;
+        this.usagaIndex = newIndex - oldIndex;
         this.price = price;
-        this.total = this.totalUsage * price ;
-        this.status = status;
+        this.total = this.usagaIndex * price ;
+        this.date = date;
+        this.serviceId = serviceId;
     }
 
     public String getDetailId() {
-        return detailId;
+        return serviceDetailId;
     }
 
     public void setDetailId(String detailId) {
-        this.detailId = detailId;
+        this.serviceDetailId = detailId;
     }
 
-    public String getDetailName() {
-        return detailName;
-    }
-
-    public void setDetailName(String detailName) {
-        this.detailName = detailName;
-    }
 
     public int getNewIndex() {
         return newIndex;
@@ -66,13 +61,6 @@ public class ServiceDetail {
         this.oldIndex = oldIndex;
     }
 
-    public int getTotalUsage() {
-        return totalUsage;
-    }
-
-    public void setTotalUsage(int totalUsage) {
-        this.totalUsage = totalUsage;
-    }
 
     public float getPrice() {
         return price;
@@ -90,17 +78,45 @@ public class ServiceDetail {
         this.total = total;
     }
 
-    public int getStatus() {
-        return status;
+    public String getServiceDetailId() {
+        return serviceDetailId;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setServiceDetailId(String serviceDetailId) {
+        this.serviceDetailId = serviceDetailId;
+    }
+
+    public int getUsagaIndex() {
+        return usagaIndex;
+    }
+
+    public void setUsagaIndex(int usagaIndex) {
+        this.usagaIndex = usagaIndex;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
     }
 
     @Override
     public String toString() {
-        return "ServiceDetail{" + "detailId=" + detailId + ", detailName=" + detailName + ", newIndex=" + newIndex + ", oldIndex=" + oldIndex + ", totalUsage=" + totalUsage + ", price=" + price + ", total=" + total + ", status=" + status + '}';
+        return "ServiceDetail{" + "serviceDetailId=" + serviceDetailId + ", newIndex=" + newIndex + ", oldIndex=" + oldIndex + ", usagaIndex=" + usagaIndex + ", price=" + price + ", total=" + total + ", date=" + date + ", serviceId=" + serviceId + '}';
     }
+
+
+
+   
     
 }

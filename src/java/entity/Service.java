@@ -17,8 +17,17 @@ public class Service {
     private String serviceName;
     private Date createdDate;
     private int status;
+    private String typeID;
     private float price;
 
+    public String getTypeID() {
+        return typeID;
+    }
+
+    public void setTypeID(String typeID) {
+        this.typeID = typeID;
+    }
+ 
     public Service() {
     }
 
@@ -29,10 +38,11 @@ public class Service {
         this.price = price;
     }
 
-    public Service(String serviceId, String serviceName, Date createdDate, int status, float price) {
+    public Service(String serviceId, String serviceName, Date createdDate, int status, String typeID, float price) {
         this.serviceId = serviceId;
         this.serviceName = serviceName;
         this.createdDate = createdDate;
+        this.typeID = typeID;
         this.status = status;
         this.price = price;
     }

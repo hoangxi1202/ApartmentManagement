@@ -4,6 +4,7 @@
     Author     : Minh Hoàng
 --%>
 
+<%@page import="dao.ServiceDAO"%>
 <%@page import="dto.UserDTO"%>
 <%@page import="entity.Service"%>
 <%@page import="java.util.List"%>
@@ -48,7 +49,7 @@
                     <th>No</th>
                     <th>Service ID</th>
                     <th>Service Name</th>
-<!--                    <th>Create Date</th>-->
+                    <th>Create Date</th>
                     <th>Price</th>
                     <th>Update</th>
                     <th>Add detail</th>
@@ -61,13 +62,11 @@
                     for (Service s : list) {
                         int statusDetail = 0; // dont sow anything (0)
                         // show add detail with elec and water bill (1)
-                        // show detail when added (2)
-                        if (s.getServiceId().equals("SV01") || s.getServiceId().equals("SV02")) {
-//                            if (s.getDetailId() == null) {
-//                                statusDetail = 1;
-//                            } else {
-//                                statusDetail = 2;
-//                            }
+                        // show detail added (2)
+                        ServiceDAO dao = new ServiceDAO();
+                        if (dao.checkServiceHasDetail(s.getServiceId())){
+                            statusDetail = 2;
+                        }else{
                             statusDetail = 1;
                         }
                 %>
@@ -78,9 +77,9 @@
                     <td>                  
                         <input type="text" name="serName" value="<%=s.getServiceName()%>"/>
                     </td>              
-<!--              //       <td>
+                     <td>
                         <input type="text" name="serDate" value="<%=s.getCreatedDate()%>"/>
-                    </td>-->
+                    </td>
                     <td>
                         <input type="text" name="serPrice" value="<%=s.getPrice()%>"/>
                     </td>
