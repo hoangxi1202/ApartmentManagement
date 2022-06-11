@@ -26,15 +26,15 @@ public class UserDAO {
         try {
             conn = Utils.getConnection();
             if (conn != null) {
-                String sql = "SELECT fullName, roleID "
+                String sql = "SELECT roleId "
                         + " FROM Accounts "
-                        + " WHERE userID =? AND password=? ";
+                        + " WHERE userId =? AND password=? ";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, userID);
                 stm.setString(2, password);
                 rs = stm.executeQuery();
                 if (rs.next()) {
-                    String fullName = rs.getString("fullName");
+                    String fullName ="ghjfy";
                     String roleID = rs.getString("roleID");
                     user = new UserDTO(userID, fullName, roleID, "");
                 }

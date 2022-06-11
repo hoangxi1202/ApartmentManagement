@@ -5,58 +5,69 @@
  */
 package controller;
 
-import dao.UserDAO;
+import dao.ApartmentDAO;
+import dto.ApartmentDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import utils.Utils;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Trieu Do
  */
-public class LoginController extends HttpServlet {
+@WebServlet(name = "SearchApartmentController", urlPatterns = {"/SearchApartmentController"})
+public class SearchApartmentController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String USER_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String EMPLOYEE_PAGE = "employee.jsp";
+    private static final String ERROR_AD = "admin.jsp";
+    private static final String ERROR_US = "user.jsp";
+    private static final String SUCCESS_AD = "admin.jsp";
+    private static final String SUCCESS_US = "user.jsp";
+    private static final String AD = "AD";
+    private static final String US = "US";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+        HttpSession session = request.getSession();
+        UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
+        String curUser = loginUser.getRoleID();
+        String url = "";
+        List<ApartmentDTO> listApartment = null;
+        ApartmentDAO dao = new ApartmentDAO();
+        if (AD.equals(curUser)) {
+            url = ERROR_AD;
+        } else if (US.equals(curUser)) {
+            url = ERROR_US;
+        }
         try {
-            HttpSession session = request.getSession();
-
-            String userID = request.getParameter("userName");
-            String password1 = request.getParameter("password");
-            String password = Utils.getMd5(password1);
-            UserDAO dao = new UserDAO();
-            UserDTO user = dao.checkLogin(userID, password);
-            if (user != null) {
-                session.setAttribute("LOGIN_USER", user);
-                String roleID = user.getRoleID();
-                if ("AD".equals(roleID)) {
-                    url = ADMIN_PAGE;
-                } else if ("US".equals(roleID)) {
-                    url = USER_PAGE;
-                } else if ("EM".equals(roleID)) {
-                    url = EMPLOYEE_PAGE;
-                } else {
-                    session.setAttribute("ERROR_MESSAGE", "Your role is not support");
+            String search = request.getParameter("search");
+            if (search == null) {
+                search = "";
+            }
+            if (AD.equals(curUser)) {
+                listApartment = dao.getListApartment_AD(search);
+            } else if (US.equals(curUser)) {
+                listApartment = dao.getListApartment_US(search);
+            }
+            if (listApartment.size() > 0) {
+                request.setAttribute("LIST_APARTMENT", listApartment);
+                if (AD.equals(curUser)) {
+                    url = SUCCESS_AD;
+                } else if (US.equals(curUser)) {
+                    url = SUCCESS_US;
                 }
-            } else {
-                session.setAttribute("ERROR_MESSAGE", "Incorrect id or password");
             }
         } catch (Exception e) {
-            log("Error at LoginServlet:" + e.toString());
+            log("Error at SearchController: " + e.toString());
         } finally {
-            response.sendRedirect(url);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

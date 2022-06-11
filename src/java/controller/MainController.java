@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import java.io.IOException;
@@ -24,25 +23,36 @@ public class MainController extends HttpServlet {
     private static final String LOGIN = "LoginController";
     private static final String CREATE_ACCOUNT_ACTION = "createAccount";
     private static final String CREATEACCOUNT = "CreateAccountController";
-    
-    
+    private static final String SEARCH_APARTMENT = "SearchApartment";
+    private static final String SEARCH_APARTMENT_CONTROLLER = "SearchApartmentController";
+    private static final String UPDATE_APARTMENT = "UpdateApartment";
+    private static final String UPDATE_APARTMENT_CONTROLLER = "UpdateApartmentController";
+    private static final String LOGOUT = "Logout";
+    private static final String LOGOUT_CONTROLLER = "LogoutController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
             String action = request.getParameter("action");
-            if (LOGIN_ACTION.equals(action)){
+            if (LOGIN_ACTION.equals(action)) {
                 url = LOGIN;
-            }else if(CREATE_ACCOUNT_ACTION.equals(action)){
-                url = CREATEACCOUNT;   
-            }else{
+            } else if (CREATE_ACCOUNT_ACTION.equals(action)) {
+                url = CREATEACCOUNT;
+            } else if (SEARCH_APARTMENT.equals(action)) {
+                url = SEARCH_APARTMENT_CONTROLLER;
+            } else if (UPDATE_APARTMENT.equals(action)) {
+                url = UPDATE_APARTMENT_CONTROLLER;
+            }else if (LOGOUT.equals(action)) {
+                url = LOGOUT_CONTROLLER;
+            } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("ERROR_MESSAGE", "Function is not avaible!");
             }
         } catch (Exception e) {
-            log("Error at MainController:" +e.toString());
-        }finally{
+            log("Error at MainController:" + e.toString());
+        } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
