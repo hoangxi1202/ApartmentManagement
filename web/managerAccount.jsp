@@ -41,13 +41,7 @@
                                 </label>
                                 <input class="full-width has-padding has-border " id="signup-username" name="userName" type="text" placeholder="Username" required>
                                 <p class="full-width"><%=userError.getUserIDError()%></p>                       
-                            </p>
-                            <p class="fieldset">
-                                <label class="image-replace cd-email" for="signup-email">Full name
-                                </label>
-                                <input class="full-width has-padding has-border" id="signup-email" name="fullName" type="text" placeholder="Full Name" required>
-                                <p class="full-width"><%=userError.getFullNameError()%></p> 
-                            </p>
+                            </p>                          
                             <p class="fieldset">
                                 <label class="image-replace cd-password" for="signup-password">Password
                                 </label>

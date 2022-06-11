@@ -17,10 +17,16 @@ public class Service {
     private String serviceName;
     private Date createdDate;
     private int status;
-    private String detailId;
     private float price;
 
     public Service() {
+    }
+
+    public Service(String serviceId, String serviceName, int status, float price) {
+        this.serviceId = serviceId;
+        this.serviceName = serviceName;
+        this.status = status;
+        this.price = price;
     }
 
     public Service(String serviceId, String serviceName, Date createdDate, int status, float price) {
@@ -28,15 +34,6 @@ public class Service {
         this.serviceName = serviceName;
         this.createdDate = createdDate;
         this.status = status;
-        this.price = price;
-    }
-
-    public Service(String serviceId, String serviceName, Date createdDate, int status, String detailId, float price) {
-        this.serviceId = serviceId;
-        this.serviceName = serviceName;
-        this.createdDate = createdDate;
-        this.status = status;
-        this.detailId = detailId;
         this.price = price;
     }
     
@@ -73,13 +70,7 @@ public class Service {
         this.status = status;
     }
 
-    public String getDetailId() {
-        return detailId;
-    }
 
-    public void setDetailId(String detailId) {
-        this.detailId = detailId;
-    }
 
     public float getPrice() {
         return price;
@@ -91,7 +82,7 @@ public class Service {
 
     @Override
     public String toString() {
-        return "Service{" + "serviceId=" + serviceId + ", serviceName=" + serviceName + ", createdDate=" + createdDate + ", status=" + status + ", detailId=" + detailId + ", price=" + price + '}';
+        return "Service{" + "serviceId=" + serviceId + ", serviceName=" + serviceName + ", createdDate=" + createdDate + ", status=" + status + ", price=" + price + '}';
     }
     
    

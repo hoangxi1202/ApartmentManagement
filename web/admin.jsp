@@ -18,7 +18,7 @@
             }
             String search = (String) request.getParameter("search");
             if (search == null) {
-                search ="";
+                search = "";
             }
         %>
         <a href="managerAccount.jsp">Manager Account</a>
@@ -26,10 +26,10 @@
         <form action="MainController">
             <input type="submit" name="action" value="Logout"/>
         </form>
-<!--        <form action="MainController" method="POST">
-            Email<input type="email" name="email" />
-            <input type="submit" name="action" value="SendMail"/>
-        </form>-->
+        <!--        <form action="MainController" method="POST">
+                    Email<input type="email" name="email" />
+                    <input type="submit" name="action" value="SendMail"/>
+                </form>-->
         <form action="MainController">
             Search<input type="text" name="search" value="<%=search%>"/>
             <input type="submit" name="action" value="Search"/>
@@ -44,11 +44,10 @@
                 <tr>
                     <th>No</th>
                     <th>User ID</th>
-                    <th>Full Name</th>
                     <th>Role ID</th>
                     <th>Password</th>
                     <th>Delete</th>
-                    <th>Update</th>
+<!--                    <th>Update</th>-->
                 </tr>
             </thead>
             <tbody>
@@ -59,14 +58,10 @@
             <form action="MainController" >
                 <tr>
                     <td><%= count++%></td>
-                    <td><%= user.getUserID()%></td>
-                    <td>                  
-                        <input type="text" name="fullName" value="<%=user.getFullName()%>"/>
-                    </td>              
+                    <td><%= user.getUserID()%></td>          
                     <td>
-                        <input type="text" name="roleID" value="<%=user.getRoleID()%>"/>
-                    </td>
-
+                        <%=user.getRoleID()%>
+                    </td>                   
                     <td><%= user.getPassword()%></td>
                     <td>
              <!--//            <a href="MainController?action=Delete&userID=<%=user.getUserID()%>&search=<%=search%> " >Delete</a>--> 
@@ -74,11 +69,11 @@
                         <input type="hidden" name="userID" value="<%=user.getUserID()%>"/>
                         <input type="hidden" name="search" value="<%=search%>"/> 
                     </td>
-                    <td>
+<!--                    <td>
                         <input type="submit" name="action" value="Update"/>
                         <input type="hidden" name="userID" value="<%=user.getUserID()%>"/>
                         <input type="hidden" name="search" value="<%=search%>"/> 
-                    </td>
+                    </td>-->
                 </tr>
             </form>
             <%
@@ -99,14 +94,13 @@
     %>
 </body>
 
-        <h1>Hello Admin: <%= loginUser.getFullName()%></h1>
-        <form action="MainController">
-            <input type="submit" name="action" value="ViewTrouble"/>
-        </form>
-        <form action="MainController">
-            <input type="submit" name="action" value="ViewResident"/>
-        </form>
-        
-    </body>
+<form action="MainController">
+    <input type="submit" name="action" value="ViewTrouble"/>
+</form>
+<form action="MainController">
+    <input type="submit" name="action" value="ViewResident"/>
+</form>
+
+</body>
 
 </html>

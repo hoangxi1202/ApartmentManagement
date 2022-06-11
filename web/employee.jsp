@@ -48,7 +48,7 @@
                     <th>No</th>
                     <th>Service ID</th>
                     <th>Service Name</th>
-                    <th>Create Date</th>
+<!--                    <th>Create Date</th>-->
                     <th>Price</th>
                     <th>Update</th>
                     <th>Add detail</th>
@@ -62,12 +62,13 @@
                         int statusDetail = 0; // dont sow anything (0)
                         // show add detail with elec and water bill (1)
                         // show detail when added (2)
-                        if (s.getServiceId().charAt(0) == 'E' || s.getServiceId().charAt(0) == 'W') {
-                            if (s.getDetailId() == null) {
-                                statusDetail = 1;
-                            } else {
-                                statusDetail = 2;
-                            }
+                        if (s.getServiceId().equals("SV01") || s.getServiceId().equals("SV02")) {
+//                            if (s.getDetailId() == null) {
+//                                statusDetail = 1;
+//                            } else {
+//                                statusDetail = 2;
+//                            }
+                            statusDetail = 1;
                         }
                 %>
             <form action="MainController" method="POST">
@@ -77,9 +78,9 @@
                     <td>                  
                         <input type="text" name="serName" value="<%=s.getServiceName()%>"/>
                     </td>              
-                    <td>
+<!--              //       <td>
                         <input type="text" name="serDate" value="<%=s.getCreatedDate()%>"/>
-                    </td>
+                    </td>-->
                     <td>
                         <input type="text" name="serPrice" value="<%=s.getPrice()%>"/>
                     </td>
@@ -130,7 +131,6 @@
     %> 
 </body>
 
-        <h1>Hello Employee: <%= loginUser.getFullName()%></h1>
         <form action="MainController">
             <input type="submit" name="action" value="ViewTrouble"/>
         </form>

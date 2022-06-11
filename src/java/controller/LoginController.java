@@ -37,7 +37,7 @@ public class LoginController extends HttpServlet {
             String password1 = request.getParameter("password");
             String password = Utils.getMd5(password1);
             UserDAO dao = new UserDAO();
-            UserDTO user = dao.checkLogin(userID, password1);
+            UserDTO user = dao.checkLogin(userID, password);
             if (user != null) {
                 session.setAttribute("LOGIN_USER", user);
                 String roleID = user.getRoleID();

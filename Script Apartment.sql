@@ -42,7 +42,8 @@ CREATE TABLE Accounts(
 	password varchar(512),
 	[status] bit,
 	roleId varchar(25) FOREIGN KEY REFERENCES Roles(roleId))
-
+	select * from Accounts
+	delete Accounts where userId = 'admin2'
 CREATE TABLE Owners(
 	ownerId varchar(25) PRIMARY KEY,
 	fullName nvarchar(512),
@@ -108,7 +109,7 @@ CREATE TABLE ServiceDetails(
 	oldIndex int,
 	newIndex int,
 	usagaIndex int,
-	[date] date,
+	[date] date,	
 	serviceId varchar(25) FOREIGN KEY REFERENCES Services(serviceId)
 	)
 
