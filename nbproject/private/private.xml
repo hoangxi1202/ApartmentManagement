@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
@@ -5,3 +6,19 @@
         <group/>
     </open-files>
 </project-private>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/Team%20SE%20.NET/SWP302/ApartmentManagement/web/employee.jsp</file>
+            <file>file:/D:/Team%20SE%20.NET/SWP302/ApartmentManagement/src/java/entity/Service.java</file>
+            <file>file:/D:/Team%20SE%20.NET/SWP302/ApartmentManagement/web/addDetailService.jsp</file>
+            <file>file:/D:/Team%20SE%20.NET/SWP302/ApartmentManagement/src/java/dao/ServiceDAO.java</file>
+            <file>file:/D:/Team%20SE%20.NET/SWP302/ApartmentManagement/src/java/entity/ServiceDetail.java</file>
+            <file>file:/D:/Team%20SE%20.NET/SWP302/ApartmentManagement/src/java/controller/AddDetailServiceController.java</file>
+        </group>
+    </open-files>
+</project-private>
+>>>>>>> 7b4d225f2769ab275df2795250f54860ef0cf62e
