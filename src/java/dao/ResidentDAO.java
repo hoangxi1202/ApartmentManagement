@@ -20,11 +20,11 @@ import utils.Utils;
  */
 public class ResidentDAO {
 
-    private static final String SEARCH_BY_NAME = "SELECT residentId, ownerId, name, dob, gender, job, phone FROM "
-            + "Residents WHERE name LIKE ? and status = 1";
-    private static final String SEARCH_BY_NAME_OWN = "SELECT Residents.residentId, Residents.ownerId, Residents.name, "
-            + "Residents.dob, Residents.gender, Residents.job, Residents.phone FROM "
-            + "Residents, Owners WHERE Residents.ownerId=Owners.ownerId"
+    private static final String SEARCH_BY_NAME = "SELECT residentId, ownerId, fullName, dob, sex, job, phone FROM "
+            + "Residents WHERE fullName LIKE ? and status = 1";
+    private static final String SEARCH_BY_NAME_OWN = "SELECT Residents.residentId, Residents.ownerId, Residents.fullName, "
+            + "Residents.dob, Residents.sex, Residents.job, Residents.phone FROM "
+            + "Residents, Owners WHERE Residents.ownerId = Owners.ownerId"
             + " AND Owners.userId LIKE ? AND Residents.status = 1";
     private static final String SEARCH_BY_OWN = "SELECT residentId FROM "
             + "Residents WHERE ownerId LIKE ?";
@@ -32,7 +32,7 @@ public class ResidentDAO {
     private static final String ADD_RESIDENT = "INSERT INTO Residents VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?)";
     private static final String UPDATE_RESIDENT = "UPDATE Residents SET requestId = ? WHERE residentId = ?";
     private static final String INSERT_REQUEST = "INSERT INTO Requests VALUES (?, ?, ?, ?)";
-    private static final String VIEW_REQUEST = "SELECT Requests.requestId, Residents.ownerId, Residents.residentId, Residents.name, Residents.gender, "
+    private static final String VIEW_REQUEST = "SELECT Requests.requestId, Residents.ownerId, Residents.residentId, Residents.fullName, Residents.sex, "
             + " Residents.dob, Residents.phone, Residents.status, Residents.job"
             + " FROM Requests, Residents "
             + " WHERE Requests.requestId = Residents.requestId "

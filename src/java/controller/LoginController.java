@@ -34,10 +34,10 @@ public class LoginController extends HttpServlet {
             HttpSession session = request.getSession();
 
             String userID = request.getParameter("userName");
-            String password1 = request.getParameter("password");
-            String password = Utils.getMd5(password1);
+            String password = request.getParameter("password");
+            String passwordMd5 = Utils.getMd5(password);
             UserDAO dao = new UserDAO();
-            UserDTO user = dao.checkLogin(userID, password);
+            UserDTO user = dao.checkLogin(userID, passwordMd5);
             if (user != null) {
                 session.setAttribute("LOGIN_USER", user);
                 String roleID = user.getRoleID();
