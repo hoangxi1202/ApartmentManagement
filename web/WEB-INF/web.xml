@@ -16,6 +16,42 @@
         <servlet-name>CreateAccountController</servlet-name>
         <servlet-class>controller.CreateAccountController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchController</servlet-name>
+        <servlet-class>controller.SearchController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateController</servlet-name>
+        <servlet-class>controller.UpdateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteController</servlet-name>
+        <servlet-class>controller.DeleteController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendMailController</servlet-name>
+        <servlet-class>controller.SendMailController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddServiceController</servlet-name>
+        <servlet-class>controller.AddServiceController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchServiceController</servlet-name>
+        <servlet-class>controller.SearchServiceController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateServiceController</servlet-name>
+        <servlet-class>controller.UpdateServiceController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveServiceController</servlet-name>
+        <servlet-class>controller.RemoveServiceController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddDetailServiceController</servlet-name>
+        <servlet-class>controller.AddDetailServiceController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -31,6 +67,42 @@
     <servlet-mapping>
         <servlet-name>CreateAccountController</servlet-name>
         <url-pattern>/CreateAccountController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchController</servlet-name>
+        <url-pattern>/SearchController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateController</servlet-name>
+        <url-pattern>/UpdateController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteController</servlet-name>
+        <url-pattern>/DeleteController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendMailController</servlet-name>
+        <url-pattern>/SendMailController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddServiceController</servlet-name>
+        <url-pattern>/AddServiceController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchServiceController</servlet-name>
+        <url-pattern>/SearchServiceController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateServiceController</servlet-name>
+        <url-pattern>/UpdateServiceController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveServiceController</servlet-name>
+        <url-pattern>/RemoveServiceController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddDetailServiceController</servlet-name>
+        <url-pattern>/AddDetailServiceController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

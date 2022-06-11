@@ -5,58 +5,60 @@
  */
 package controller;
 
-import dao.UserDAO;
+import dao.ResidentDAO;
+import dto.ResidentDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import utils.Utils;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LoginController extends HttpServlet {
+@WebServlet(name = "ViewResidentController", urlPatterns = {"/ViewResidentController"})
+public class ViewResidentController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String USER_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String EMPLOYEE_PAGE = "employee.jsp";
+    private static final String ERROR_AD = "admin.jsp";
+    private static final String ERROR_EM = "employee.jsp";
+    private static final String SUCCESS = "viewResident.jsp";
+    private static final String AD = "AD";
+    private static final String EM = "EM";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        try {
-            HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
+        UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
+        String curUser = loginUser.getRoleID();
+        List<ResidentDTO> listResident = null;
+        ResidentDAO dao = new ResidentDAO();
+        String url = "";
+        if (AD.equals(curUser)) {
+            url = ERROR_AD;
+        } else if (EM.equals(curUser)) {
+            url = ERROR_EM;
+        }
 
-            String userID = request.getParameter("userName");
-            String password = request.getParameter("password");
-            String passwordMd5 = Utils.getMd5(password);
-            UserDAO dao = new UserDAO();
-            UserDTO user = dao.checkLogin(userID, passwordMd5);
-            if (user != null) {
-                session.setAttribute("LOGIN_USER", user);
-                String roleID = user.getRoleID();
-                if ("AD".equals(roleID)) {
-                    url = ADMIN_PAGE;
-                } else if ("US".equals(roleID)) {
-                    url = USER_PAGE;
-                } else if ("EM".equals(roleID)) {
-                    url = EMPLOYEE_PAGE;
-                } else {
-                    session.setAttribute("ERROR_MESSAGE", "Your role is not support");
-                }
-            } else {
-                session.setAttribute("ERROR_MESSAGE", "Incorrect id or password");
+        try {
+            String search = request.getParameter("search");
+            if (search == null) {
+                search = "";
+            }
+            listResident = dao.getListResident(search);
+            if (listResident.size() > 0) {
+                request.setAttribute("LIST_RESIDENT", listResident);
+                url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at LoginServlet:" + e.toString());
+            log("Error at ViewResidentController: " + e.toString());
         } finally {
-            response.sendRedirect(url);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

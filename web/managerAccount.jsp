@@ -4,6 +4,7 @@
     Author     : Minh Hoàng
 --%>
 
+<%@page import="entity.UserError"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,8 +17,16 @@
         <link rel="stylesheet" href="css/stylePopup.css">
     </head>
     <body>
+        <%
+            UserError userError = (UserError) request.getAttribute("USER_ERROR");
+            String autoPopup="";
+            if (userError == null) {
+                autoPopup = "hide";
+                userError = new UserError();
+            }
+        %>
         <button class="open-modal-btn">dang ki tai khoan</button>
-        <div class="modal hide">
+        <div class="modal <%=autoPopup%> ">
             <div class="modal__inner">
                 <div class="modal__header">
                     <p>dang ki</p>
@@ -26,34 +35,33 @@
                 <div class="modal__body">
                     <div id="cd-signup"> 
                         <!-- sign up form -->
-                        <form action="MainController" method="POST" class="cd-form">
-                            <p class="fieldset">
-                                <label class="image-replace cd-username" for="signup-username">Username
+                        <form action="MainController" method="POST" class="cd-form ">
+                            <p class="fieldset cd-username ">
+                                <label class="image-replace " for="signup-username">Username
                                 </label>
-                                <input class="full-width has-padding has-border" id="signup-username" name="userName" type="text" placeholder="Username">
-                                <!--                         <span class="cd-error-message">Username không được bỏ trống! 
-                                                        </span>-->
-                            </p>
-                            <p class="fieldset">
-                                <label class="image-replace cd-email" for="signup-email">Email
-                                </label>
-                                <input class="full-width has-padding has-border" id="signup-email" name="email" type="email" placeholder="E-mail">
-                                <!--                         <span class="cd-error-message">Email không được bỏ trống! 
-                                                        </span>-->
-                            </p>
+                                <input class="full-width has-padding has-border " id="signup-username" name="userName" type="text" placeholder="Username" required>
+                                <p class="full-width"><%=userError.getUserIDError()%></p>                       
+                            </p>                          
                             <p class="fieldset">
                                 <label class="image-replace cd-password" for="signup-password">Password
                                 </label>
-                                <input class="full-width has-padding has-border" id="signup-password" name="password" type="password"  placeholder="Password">
+                                <input class="full-width has-padding has-border" id="signup-password" name="password" type="password"  placeholder="Password" required>
                                 <a href="#0" class="hide-password">Hide
                                 </a>
-                                <!--                         <span class="cd-error-message">Password không được bỏ trống! 
-                                                        </span>-->
                             </p>
-
                             <p class="fieldset">
-                                <input class="full-width has-padding" type="submit" name="action" value="createAccount">
+                                <label class="image-replace cd-password" for="signup-password">Password Confirm
+                                </label>
+                                <input class="full-width has-padding has-border" id="signup-password" name="passwordConfirm" type="password"  placeholder="Confirm" required>
+                                <a href="#0" class="hide-password">Hide
+                                </a>
+                                <p class="full-width"><%=userError.getConfirmError()%></p> 
                             </p>
+                            <p class="fieldset">
+                                <input class="full-width has-padding" type="submit" name="action" value="createAccount" >
+                                
+                            </p>
+                            <p class="full-width"><%=userError.getMessageError()%></p> 
                         </form>
                         <!-- <a href="#0" class="cd-close-form">Close</a> -->
                     </div> 
@@ -66,5 +74,11 @@
             </div>
         </div>
     </body>
-    <script src="js/popup.js"></script>
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js">
+</script>
+<script src = "js/popup.js" ></script>
+
 </html>

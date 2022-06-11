@@ -12,16 +12,14 @@ package dto;
  */
 public class UserDTO {
     private String userID;
-    private String fullName;
     private String roleID;
     private String password;
 
     public UserDTO() {
     }
 
-    public UserDTO(String userID, String fullName, String roleID, String password) {
+    public UserDTO(String userID, String password, String roleID) {
         this.userID = userID;
-        this.fullName = fullName;
         this.roleID = roleID;
         this.password = password;
     }
@@ -32,14 +30,6 @@ public class UserDTO {
 
     public void setUserID(String userID) {
         this.userID = userID;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getRoleID() {

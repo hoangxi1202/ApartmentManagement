@@ -1,6 +1,17 @@
 :root {
   --pink-color: #e26e70;
 }
+html * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      *,
+      *:after,
+      *:before {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
 * {
   margin: 0;
   padding: 0;
@@ -280,3 +291,4 @@ body {
     opacity: 1;
   }
 }
+

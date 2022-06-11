@@ -5,58 +5,43 @@
  */
 package controller;
 
-import dao.UserDAO;
-import dto.UserDTO;
+import dao.TroubleDAO;
+import dto.TroubleTypeDTO;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import utils.Utils;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LoginController extends HttpServlet {
+@WebServlet(name = "BeforeCreateTroubleController", urlPatterns = {"/BeforeCreateTroubleController"})
+public class BeforeCreateTroubleController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String USER_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String EMPLOYEE_PAGE = "employee.jsp";
+    private static final String SUCCESS = "createTrouble.jsp";
+    private static final String ERROR = "user.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        List<TroubleTypeDTO> listType = null;
+        TroubleDAO dao = new TroubleDAO();
         try {
-            HttpSession session = request.getSession();
-
-            String userID = request.getParameter("userName");
-            String password = request.getParameter("password");
-            String passwordMd5 = Utils.getMd5(password);
-            UserDAO dao = new UserDAO();
-            UserDTO user = dao.checkLogin(userID, passwordMd5);
-            if (user != null) {
-                session.setAttribute("LOGIN_USER", user);
-                String roleID = user.getRoleID();
-                if ("AD".equals(roleID)) {
-                    url = ADMIN_PAGE;
-                } else if ("US".equals(roleID)) {
-                    url = USER_PAGE;
-                } else if ("EM".equals(roleID)) {
-                    url = EMPLOYEE_PAGE;
-                } else {
-                    session.setAttribute("ERROR_MESSAGE", "Your role is not support");
-                }
-            } else {
-                session.setAttribute("ERROR_MESSAGE", "Incorrect id or password");
+            listType = dao.getListTypeTrouble();
+            if (listType.size() > 0) {
+                request.setAttribute("LIST_TYPE_TROUBLE", listType);
+                url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at LoginServlet:" + e.toString());
+            log("Error at BeforeCreateTroubleController: " + e.toString());
         } finally {
-            response.sendRedirect(url);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

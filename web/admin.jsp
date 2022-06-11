@@ -1,13 +1,10 @@
-<%-- 
-    Document   : admin
-    Created on : May 23, 2022, 9:32:30 PM
-    Author     : Minh Hoàng
---%>
+
 
 <%@page import="dao.ApartmentError"%>
 <%@page import="java.util.List"%>
 <%@page import="dto.ApartmentDTO"%>
 <%@page import="dto.ApartmentDTO"%>
+<%@page import="java.util.List"%>
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -24,6 +21,10 @@
                 session.setAttribute("ERROR_MESSAGE", "Please Login as admin!");
                 return;
             }
+            String search = (String) request.getParameter("search");
+            if (search == null) {
+                search = "";
+            }
         %>
         <%
             String search = request.getParameter("search");
@@ -32,6 +33,7 @@
             }
         %>
         <a href="managerAccount.jsp">Manager Account</a>
+
         <h1>Hello Admin: <%= loginUser.getFullName()%></h1>
         <form action="MainController" method="POST">
             <input type="submit" name="action" value="Logout"/>
@@ -44,11 +46,30 @@
             List<ApartmentDTO> listApartment = (List<ApartmentDTO>) request.getAttribute("LIST_APARTMENT");
             if (listApartment != null) {
                 if (listApartment.size() > 0) {
+
+
+        <form action="MainController">
+            <input type="submit" name="action" value="Logout"/>
+        </form>
+        <!--        <form action="MainController" method="POST">
+                    Email<input type="email" name="email" />
+                    <input type="submit" name="action" value="SendMail"/>
+                </form>-->
+        <form action="MainController">
+            Search<input type="text" name="search" value="<%=search%>"/>
+            <input type="submit" name="action" value="Search"/>
+        </form>
+        <%
+            List<UserDTO> list = (List<UserDTO>) request.getAttribute("LIST_USER");
+            if (list != null) {
+                if (!list.isEmpty()) {
+
         %>
         <table border="1">
             <thead>
                 <tr>
                     <th>No</th>
+
                     <th>Apartment ID</th>
                     <th>Image</th>
                     <th>Details</th>
@@ -56,10 +77,18 @@
                     <th>Rent Price</th>
                     <th>Sale Price</th>
                     <th>Status</th>
+
+                    <th>User ID</th>
+                    <th>Role ID</th>
+                    <th>Password</th>
+                    <th>Delete</th>
+<!--                    <th>Update</th>-->
+
                 </tr>
             </thead>
             <tbody>
                 <%
+
                     ApartmentError apartmentError = (ApartmentError) request.getAttribute("APARTMENT_ERROR");
                     if (apartmentError == null) {
                         apartmentError = new ApartmentError();
@@ -107,6 +136,30 @@
                         <input type="submit" name="action" value="UpdateApartment"/>
                         <input type="hidden" name="search" value="<%= search%>"/>
                     </td>
+
+                    int count = 1;
+                    for (UserDTO user : list) {
+                %>
+            <form action="MainController" >
+                <tr>
+                    <td><%= count++%></td>
+                    <td><%= user.getUserID()%></td>          
+                    <td>
+                        <%=user.getRoleID()%>
+                    </td>                   
+                    <td><%= user.getPassword()%></td>
+                    <td>
+             <!--//            <a href="MainController?action=Delete&userID=<%=user.getUserID()%>&search=<%=search%> " >Delete</a>--> 
+                        <input type="submit" name="action" value="Delete"/>
+                        <input type="hidden" name="userID" value="<%=user.getUserID()%>"/>
+                        <input type="hidden" name="search" value="<%=search%>"/> 
+                    </td>
+<!--                    <td>
+                        <input type="submit" name="action" value="Update"/>
+                        <input type="hidden" name="userID" value="<%=user.getUserID()%>"/>
+                        <input type="hidden" name="search" value="<%=search%>"/> 
+                    </td>-->
+
                 </tr>
             </form>
             <%
@@ -119,4 +172,26 @@
         }
     %>
 </body>
+        }
+        String error_message = (String) request.getAttribute("ERROR_MESSSAGE");
+        if (error_message == null) {
+            error_message = "";
+        }
+    %>
+    <h1 ><%= error_message%></h1>
+    <%
+        }
+    %>
+</body>
+
+<form action="MainController">
+    <input type="submit" name="action" value="ViewTrouble"/>
+</form>
+<form action="MainController">
+    <input type="submit" name="action" value="ViewResident"/>
+</form>
+
+</body>
+
+
 </html>

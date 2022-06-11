@@ -5,58 +5,47 @@
  */
 package controller;
 
-import dao.UserDAO;
+import dao.ResidentDAO;
+import dto.ResidentDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import utils.Utils;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LoginController extends HttpServlet {
+@WebServlet(name = "BeforeDeleteResidentController", urlPatterns = {"/BeforeDeleteResidentController"})
+public class BeforeDeleteResidentController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String USER_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String EMPLOYEE_PAGE = "employee.jsp";
+    private static final String SUCCESS = "deleteResident.jsp";
+    private static final String ERROR = "user.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        List<ResidentDTO> listRes = null;
         try {
             HttpSession session = request.getSession();
-
-            String userID = request.getParameter("userName");
-            String password = request.getParameter("password");
-            String passwordMd5 = Utils.getMd5(password);
-            UserDAO dao = new UserDAO();
-            UserDTO user = dao.checkLogin(userID, passwordMd5);
-            if (user != null) {
-                session.setAttribute("LOGIN_USER", user);
-                String roleID = user.getRoleID();
-                if ("AD".equals(roleID)) {
-                    url = ADMIN_PAGE;
-                } else if ("US".equals(roleID)) {
-                    url = USER_PAGE;
-                } else if ("EM".equals(roleID)) {
-                    url = EMPLOYEE_PAGE;
-                } else {
-                    session.setAttribute("ERROR_MESSAGE", "Your role is not support");
-                }
-            } else {
-                session.setAttribute("ERROR_MESSAGE", "Incorrect id or password");
+            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
+            ResidentDAO dao = new ResidentDAO();
+            listRes = dao.getListResidentV2(loginUser.getUserID());
+            if (listRes.size() > 0) {
+                request.setAttribute("LIST_RESIDENT", listRes);
+                url = SUCCESS;
             }
-        } catch (Exception e) {
-            log("Error at LoginServlet:" + e.toString());
+        } catch (SQLException e) {
+            log("Error at BeforeDeleteResidentController: " + e.toString());
         } finally {
-            response.sendRedirect(url);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

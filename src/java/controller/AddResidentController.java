@@ -5,58 +5,55 @@
  */
 package controller;
 
+import dao.ResidentDAO;
 import dao.UserDAO;
+import dto.ResidentDTO;
 import dto.UserDTO;
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import utils.Utils;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Nhat Linh
  */
-public class LoginController extends HttpServlet {
+@WebServlet(name = "AddResidentController", urlPatterns = {"/AddResidentController"})
+public class AddResidentController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String USER_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String EMPLOYEE_PAGE = "employee.jsp";
+    private static final String SUCCESS = "user.jsp";
+    private static final String ERROR = "addResident.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            String[] name = request.getParameterValues("name");
+            String[] dob = request.getParameterValues("dob");
+            String[] gender = request.getParameterValues("gender");
+            String[] job = request.getParameterValues("job");
+            String[] phone = request.getParameterValues("phone");
             HttpSession session = request.getSession();
-
-            String userID = request.getParameter("userName");
-            String password = request.getParameter("password");
-            String passwordMd5 = Utils.getMd5(password);
+            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
             UserDAO dao = new UserDAO();
-            UserDTO user = dao.checkLogin(userID, passwordMd5);
-            if (user != null) {
-                session.setAttribute("LOGIN_USER", user);
-                String roleID = user.getRoleID();
-                if ("AD".equals(roleID)) {
-                    url = ADMIN_PAGE;
-                } else if ("US".equals(roleID)) {
-                    url = USER_PAGE;
-                } else if ("EM".equals(roleID)) {
-                    url = EMPLOYEE_PAGE;
-                } else {
-                    session.setAttribute("ERROR_MESSAGE", "Your role is not support");
-                }
-            } else {
-                session.setAttribute("ERROR_MESSAGE", "Incorrect id or password");
+            String ownerId = dao.getOwnerId(loginUser.getUserID());
+            ResidentDAO daoRes = new ResidentDAO();
+            String residentId = ownerId + String.valueOf(daoRes.getIndexResident(ownerId));
+            String requestId = String.valueOf(daoRes.getIndexRequest() + 1);
+            daoRes.insertRequest(requestId, ownerId);
+            for (int i = 0; i < name.length; i++) {
+                daoRes.addResident(new ResidentDTO(residentId, ownerId, name[i], dob[i], (gender[i].equals("1")), job[i], phone[i], false, requestId));
             }
+            url = SUCCESS;
+
         } catch (Exception e) {
-            log("Error at LoginServlet:" + e.toString());
+            log("Error at AddResidentCOntroller: " + e.toString());
         } finally {
-            response.sendRedirect(url);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

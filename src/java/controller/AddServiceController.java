@@ -5,58 +5,65 @@
  */
 package controller;
 
-import dao.UserDAO;
-import dto.UserDTO;
+import dao.ServiceDAO;
+import entity.Service;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import utils.Utils;
 
 /**
  *
  * @author Minh Hoàng
  */
-public class LoginController extends HttpServlet {
+public class AddServiceController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String USER_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String EMPLOYEE_PAGE = "employee.jsp";
+    private static final String ERROR = "addService.jsp";
+    private static final String SUCCESS = "addService.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            HttpSession session = request.getSession();
-
-            String userID = request.getParameter("userName");
-            String password = request.getParameter("password");
-            String passwordMd5 = Utils.getMd5(password);
-            UserDAO dao = new UserDAO();
-            UserDTO user = dao.checkLogin(userID, passwordMd5);
-            if (user != null) {
-                session.setAttribute("LOGIN_USER", user);
-                String roleID = user.getRoleID();
-                if ("AD".equals(roleID)) {
-                    url = ADMIN_PAGE;
-                } else if ("US".equals(roleID)) {
-                    url = USER_PAGE;
-                } else if ("EM".equals(roleID)) {
-                    url = EMPLOYEE_PAGE;
-                } else {
-                    session.setAttribute("ERROR_MESSAGE", "Your role is not support");
-                }
+            String serID = request.getParameter("serID");
+            String serName = request.getParameter("serName");
+            //
+            String serDate = request.getParameter("serDate");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date = sdf.parse(serDate);
+            java.sql.Date sqlDate = new Date(date.getTime());
+            //
+            float serPrice = Float.parseFloat(request.getParameter("serPrice"));
+            //
+            String type = request.getParameter("type");
+            Service s = new Service(serID, serName, sqlDate, 1, type, serPrice);
+            ServiceDAO SerDAO = new ServiceDAO();
+            String mess;
+            boolean checkDuplicate = SerDAO.checkDuplicate(serID);
+            if (checkDuplicate) {
+                mess = "Duplicate Service ID : " + serID + " !";
+                request.setAttribute("ERROR_MESSAGE", mess);
             } else {
-                session.setAttribute("ERROR_MESSAGE", "Incorrect id or password");
+                boolean checkInsert = SerDAO.insertService(s);
+                if (checkInsert) {
+                    url = SUCCESS;
+                    mess = "Add new service successfully!";
+                    request.setAttribute("ERROR_MESSAGE", mess);
+                } else {
+                    mess = "Cannot insert, unknow error!";
+                    request.setAttribute("ERROR_MESSAGE", mess);
+                }
             }
+            
         } catch (Exception e) {
-            log("Error at LoginServlet:" + e.toString());
+            log("Error at AddServiceController" + e.toString());
         } finally {
-            response.sendRedirect(url);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 
