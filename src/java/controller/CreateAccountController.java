@@ -5,7 +5,6 @@
  */
 
 package controller;
-
 import dao.UserDAO;
 import dto.UserDTO;
 import java.io.IOException;
@@ -31,8 +30,6 @@ public class CreateAccountController extends HttpServlet {
         String url = ERROR;
         try {
             String userID = request.getParameter("userName");
-           // String fullName = request.getParameter("fullName");
-//            String roleID = request.getParameter("roleID");
             String roleID = "US";
             String password = request.getParameter("password");
             String confirm = request.getParameter("passwordConfirm");
@@ -42,14 +39,6 @@ public class CreateAccountController extends HttpServlet {
                 userError.setUserIDError("UserID length must be less than 20!");
                 check = false;
             }
-//            if (fullName.length() > 50 ) {
-//                userError.setFullNameError("Full Name length must be less than 50!");
-//                check = false;
-//            }
-//            if (roleID.length() > 5 || roleID.length() < 2) {
-//                userError.setRoleIDError("UserID length must be in [2,5]");
-//                check = false;
-//            }
             if (!password.equals(confirm)) {
                 userError.setConfirmError("confirm password wrong!");
                 check = false;
