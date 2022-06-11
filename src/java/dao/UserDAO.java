@@ -36,7 +36,12 @@ public class UserDAO {
         try {
             conn = Utils.getConnection();
             if (conn != null) {
+
+                String sql = "SELECT roleId "
+                        + " FROM Accounts "
+                        + " WHERE userId =? AND password=? ";
                 stm = conn.prepareStatement(CHECK_LOGIN);
+
                 stm.setString(1, userID);
                 stm.setString(2, password);
                 rs = stm.executeQuery();

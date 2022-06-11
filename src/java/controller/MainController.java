@@ -26,6 +26,13 @@ public class MainController extends HttpServlet {
     private static final String CREATE_ACCOUNT_ACTION = "createAccount";
     private static final String CREATEACCOUNT = "CreateAccountController";
 
+    private static final String SEARCH_APARTMENT = "SearchApartment";
+    private static final String SEARCH_APARTMENT_CONTROLLER = "SearchApartmentController";
+    private static final String UPDATE_APARTMENT = "UpdateApartment";
+    private static final String UPDATE_APARTMENT_CONTROLLER = "UpdateApartmentController";
+    private static final String LOGOUT = "Logout";
+    private static final String LOGOUT_CONTROLLER = "LogoutController";
+
     private static final String SEARCH_ACTION = "Search";
     private static final String SEARCH = "SearchController";
     private static final String UPDATE_ACTION = "Update";
@@ -74,8 +81,15 @@ public class MainController extends HttpServlet {
             String action = request.getParameter("action");
             if (LOGIN_ACTION.equals(action)) {
                 url = LOGIN;
-
-            } else if (LOGOUT_ACTION.equals(action)) {
+            } else if (CREATE_ACCOUNT_ACTION.equals(action)) {
+                url = CREATEACCOUNT;
+            } else if (SEARCH_APARTMENT.equals(action)) {
+                url = SEARCH_APARTMENT_CONTROLLER;
+            } else if (UPDATE_APARTMENT.equals(action)) {
+                url = UPDATE_APARTMENT_CONTROLLER;
+            }else if (LOGOUT.equals(action)) {
+                url = LOGOUT_CONTROLLER;
+            }  else if (LOGOUT_ACTION.equals(action)) {
                 url = LOGOUT;
             } else if (CREATE_ACCOUNT_ACTION.equals(action)) {
                 url = CREATEACCOUNT;

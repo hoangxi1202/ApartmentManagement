@@ -5,58 +5,55 @@
  */
 package controller;
 
-import dao.UserDAO;
-import dto.UserDTO;
+import dao.ApartmentDAO;
+import dao.ApartmentError;
+import dto.ApartmentDTO;
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import utils.Utils;
 
 /**
  *
- * @author Minh Hoàng
+ * @author Trieu Do
  */
-public class LoginController extends HttpServlet {
+@WebServlet(name = "UpdateApartmentController", urlPatterns = {"/UpdateApartmentController"})
+public class UpdateApartmentController extends HttpServlet {
 
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String USER_PAGE = "MainController?action=SearchApartment&search=";
-    private static final String EMPLOYEE_PAGE = "employee.jsp";
+    private static final String ERROR = "MainController?action=SearchApartment&search=";
+    private static final String SUCCESS = "MainController?action=SearchApartment&search=";
+//    private static final String ERROR = "SearchApartmentController";
+//    private static final String SUCCESS = "SearchApartmentController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        ApartmentError apartmentError = new ApartmentError();
         try {
-            HttpSession session = request.getSession();
-
-            String userID = request.getParameter("userName");
-            String password = request.getParameter("password");
-            String passwordMd5 = Utils.getMd5(password);
-            UserDAO dao = new UserDAO();
-            UserDTO user = dao.checkLogin(userID, passwordMd5);
-            if (user != null) {
-                session.setAttribute("LOGIN_USER", user);
-                String roleID = user.getRoleID();
-                if ("AD".equals(roleID)) {
-                    url = ADMIN_PAGE;
-                } else if ("US".equals(roleID)) {
-                    url = USER_PAGE;
-                } else if ("EM".equals(roleID)) {
-                    url = EMPLOYEE_PAGE;
-                } else {
-                    session.setAttribute("ERROR_MESSAGE", "Your role is not support");
+            boolean checkValidation = true;
+            String apartmentId = request.getParameter("apartmentId");
+            String size = request.getParameter("size");
+            String details = request.getParameter("details");
+            String buildingName = request.getParameter("buildingName");
+            float rentPrice = Float.parseFloat(request.getParameter("rentPrice"));
+            float salePrice = Float.parseFloat(request.getParameter("salePrice"));
+            String status = request.getParameter("status");
+            ApartmentDTO apartment = new ApartmentDTO(apartmentId, size, details, buildingName, rentPrice, salePrice, status);
+            ApartmentDAO dao = new ApartmentDAO();
+            if (checkValidation) {
+                if (dao.updateApartment(apartment)) {
+                    url = SUCCESS;
                 }
             } else {
-                session.setAttribute("ERROR_MESSAGE", "Incorrect id or password");
+                request.setAttribute("APARTMENT_ERROR", apartmentError);
             }
         } catch (Exception e) {
-            log("Error at LoginServlet:" + e.toString());
+            log("Error at UpdateController: " + e.toString());
         } finally {
-            response.sendRedirect(url);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 
