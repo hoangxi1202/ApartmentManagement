@@ -5,6 +5,7 @@
  */
 package dao;
 
+import dto.RequestDTO;
 import dto.ResidentDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,14 +33,20 @@ public class ResidentDAO {
     private static final String ADD_RESIDENT = "INSERT INTO Residents VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?)";
     private static final String UPDATE_RESIDENT = "UPDATE Residents SET requestId = ? WHERE residentId = ?";
     private static final String INSERT_REQUEST = "INSERT INTO Requests VALUES (?, ?, ?, ?)";
-    private static final String VIEW_REQUEST = "SELECT Requests.requestId, Residents.ownerId, Residents.residentId, Residents.fullName, Residents.sex, "
+    private static final String VIEW_REQUEST_RESIDENT = "SELECT Requests.requestId, Residents.ownerId, Residents.residentId, Residents.fullName, Residents.sex, "
             + " Residents.dob, Residents.phone, Residents.status, Residents.job"
             + " FROM Requests, Residents "
             + " WHERE Requests.requestId = Residents.requestId "
-            + " AND Requests.status = 0 AND action = ?";
+            + " AND Requests.status = 0 AND action = ?"
+            + " AND Residents.ownerId = ?";
+    private static final String VIEW_REQUEST = "SELECT requestId, Requests.ownerId, Owners.fullName\n"
+            + "FROM Requests, Owners\n"
+            + "WHERE Requests.ownerId = Owners.ownerId\n"
+            + "	AND Requests.status = 0\n"
+            + "	AND [action] = ?";
 
-    public List<ResidentDTO> getListRequestRes(String action) throws SQLException {
-        List<ResidentDTO> listResident = new ArrayList<>();
+    public List<RequestDTO> getListRequest(String action) throws SQLException {
+        List<RequestDTO> listRequest = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
@@ -50,11 +57,45 @@ public class ResidentDAO {
                 ptm.setString(1, action);
                 rs = ptm.executeQuery();
                 while (rs.next()) {
-                    String residentId = rs.getString("residentId");
+                    String requestId = rs.getString("requestId");
                     String ownerId = rs.getString("ownerId");
-                    String name = rs.getString("name");
+                    String name = rs.getString("fullName");
+                    listRequest.add(new RequestDTO(requestId, ownerId, name, false));
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return listRequest;
+    }
+
+    public List<ResidentDTO> getListRequestRes(String action, String ownerId) throws SQLException {
+        List<ResidentDTO> listResident = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        ResultSet rs = null;
+        try {
+            conn = Utils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(VIEW_REQUEST_RESIDENT);
+                ptm.setString(1, action);
+                ptm.setString(2, ownerId);
+                rs = ptm.executeQuery();
+                while (rs.next()) {
+                    String residentId = rs.getString("residentId");
+//                    String ownerId = rs.getString("ownerId");
+                    String name = rs.getString("fullName");
                     String dob = rs.getString("dob");
-                    boolean gender = Utils.getBoolean(rs.getString("gender"));
+                    boolean gender = Utils.getBoolean(rs.getString("sex"));
                     String job = rs.getString("job");
                     String phone = rs.getString("phone");
                     String req = rs.getString("requestId");
@@ -121,9 +162,9 @@ public class ResidentDAO {
                 while (rs.next()) {
                     String residentId = rs.getString("residentId");
                     String ownerId = rs.getString("ownerId");
-                    String name = rs.getString("name");
+                    String name = rs.getString("fullName");
                     String dob = rs.getString("dob");
-                    boolean gender = Utils.getBoolean(rs.getString("gender"));
+                    boolean gender = Utils.getBoolean(rs.getString("sex"));
                     String job = rs.getString("job");
                     String phone = rs.getString("phone");
                     String req = "";
@@ -161,15 +202,14 @@ public class ResidentDAO {
                     String ownerId = rs.getString("ownerId");
                     String name = rs.getString("name");
                     String dob = rs.getString("dob");
-                    boolean gender = Utils.getBoolean(rs.getString("gender"));
+                    boolean gender = Utils.getBoolean(rs.getString("sex"));
                     String job = rs.getString("job");
                     String phone = rs.getString("phone");
                     String req = "";
                     listResident.add(new ResidentDTO(residentId, ownerId, name, dob, gender, job, phone, true, req));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (rs != null) {
                 rs.close();
@@ -199,8 +239,7 @@ public class ResidentDAO {
                     count++;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (rs != null) {
                 rs.close();
@@ -229,8 +268,7 @@ public class ResidentDAO {
                     count++;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (rs != null) {
                 rs.close();
@@ -267,8 +305,7 @@ public class ResidentDAO {
                 stm.setString(8, res.getOwnerId());
                 check = stm.executeUpdate() > 0;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (conn != null) {
                 conn.close();
@@ -294,8 +331,7 @@ public class ResidentDAO {
                 stm.setString(4, ownerId);
                 check = stm.executeUpdate() > 0;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (conn != null) {
                 conn.close();

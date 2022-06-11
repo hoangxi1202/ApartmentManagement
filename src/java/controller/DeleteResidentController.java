@@ -38,7 +38,13 @@ public class DeleteResidentController extends HttpServlet {
             UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
             UserDAO dao = new UserDAO();
             String ownerId = dao.getOwnerId(loginUser.getUserID());
-            String requestId = String.valueOf(daoRes.getIndexRequest() + 1);
+            int indexReq = daoRes.getIndexRequest() + 1;
+            String requestId = "REQ";
+            if (indexReq > 99) {
+                requestId += String.valueOf(indexReq);
+            } else {
+                requestId += "0" + String.valueOf(indexReq);
+            }
             daoRes.insertRequestV2(requestId, ownerId);
             for (int i = 0; i < residentId.length; i++) {
                 daoRes.updateResident(requestId, residentId[i]);

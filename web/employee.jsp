@@ -96,8 +96,7 @@
                         <input type="submit" name="action" value="AddDetailService"/>
                     </td>
                     <%
-                        }
-                        else if (statusDetail == 2) {
+                    } else if (statusDetail == 2) {
                     %>
                     <td>
                         <input type="hidden" name="serID" value="<%=s.getServiceId()%>"/>
@@ -128,13 +127,12 @@
         }
 
     %> 
-</body>
+    <!--</body>-->
 
-        <h1>Hello Employee: <%= loginUser.getFullName()%></h1>
-        <form action="MainController">
-            <input type="submit" name="action" value="ViewTrouble"/>
-        </form>
-        <a href="MainController?action=befResidentRequest" >Resident Request</a>
-    </body>
+    <form action="MainController">
+        <input type="submit" name="action" value="ViewTrouble"/>
+    </form>
+    <a href="MainController?action=befResidentRequest" >Resident Request</a>
+</body>
 
 </html>

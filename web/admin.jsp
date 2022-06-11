@@ -18,7 +18,7 @@
             }
             String search = (String) request.getParameter("search");
             if (search == null) {
-                search ="";
+                search = "";
             }
         %>
         <a href="managerAccount.jsp">Manager Account</a>
@@ -26,10 +26,10 @@
         <form action="MainController">
             <input type="submit" name="action" value="Logout"/>
         </form>
-<!--        <form action="MainController" method="POST">
-            Email<input type="email" name="email" />
-            <input type="submit" name="action" value="SendMail"/>
-        </form>-->
+        <!--        <form action="MainController" method="POST">
+                    Email<input type="email" name="email" />
+                    <input type="submit" name="action" value="SendMail"/>
+                </form>-->
         <form action="MainController">
             Search<input type="text" name="search" value="<%=search%>"/>
             <input type="submit" name="action" value="Search"/>
@@ -97,16 +97,16 @@
     <%
         }
     %>
-</body>
 
-        <h1>Hello Admin: <%= loginUser.getFullName()%></h1>
-        <form action="MainController">
-            <input type="submit" name="action" value="ViewTrouble"/>
-        </form>
-        <form action="MainController">
-            <input type="submit" name="action" value="ViewResident"/>
-        </form>
-        
-    </body>
+
+    <h1>Hello Admin: <%= loginUser.getFullName()%></h1>
+    <form action="MainController">
+        <input type="submit" name="action" value="ViewTrouble"/>
+    </form>
+    <form action="MainController">
+        <input type="submit" name="action" value="ViewResident"/>
+    </form>
+
+</body>
 
 </html>

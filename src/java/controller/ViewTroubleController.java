@@ -9,6 +9,7 @@ import dao.TroubleDAO;
 import dto.TroubleDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -55,7 +56,7 @@ public class ViewTroubleController extends HttpServlet {
                     url = SUCCESS_EM;
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             log("Error at ViewTroubleController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
